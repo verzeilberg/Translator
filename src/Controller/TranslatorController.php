@@ -18,11 +18,11 @@ class TranslatorController extends AbstractActionController {
     }
 
     public function indexAction() {
-        $this->layout('layout/beheer');
-        $translatorForms = $this->translatorService->getTranslators();
+        $translations = $this->translatorService->getTranslations();
+
         return new ViewModel(
                 array(
-            'translatorForms' => $translatorForms,
+            'translations' => $translations
                 )
         );
     }

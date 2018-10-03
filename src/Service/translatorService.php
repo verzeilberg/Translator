@@ -1,6 +1,6 @@
 <?php
 
-namespace Agenda\Service;
+namespace Translator\Service;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Mail;
@@ -10,9 +10,11 @@ use Zend\Mime\Message as MimeMessage;
 /*
  * Entities
  */
-use Agenda\Entity\Agenda;
+use Translator\Entities\Translation;
 
-class agendaService implements agendaServiceInterface {
+class translatorService implements translatorServiceInterface {
+
+    protected $entityManager;
 
     /**
      * Constructor.
@@ -23,113 +25,112 @@ class agendaService implements agendaServiceInterface {
 
     /**
      *
-     * Get array of agendas
+     * Get array of translations
      *
      * @return      array
      *
      */
-    public function getAgendas() {
+    public function getTranslations() {
 
-        $agendas = $this->entityManager->getRepository(Agenda::class)
+        $translators = $this->entityManager->getRepository(Translation::class)
                 ->findBy([], ['dateCreated' => 'DESC']);
-        
-        return $agendas;
+
+        return $translators;
     }
-    
-        /**
+
+    /**
      *
-     * Get blog object based on id
+     * Get translation object based on id
      *
-     * @param       id  $id The id to fetch the blog from the database
+     * @param       id  $id The id to fetch the translation from the database
      * @return      object
      *
      */
-    public function getAgendaFormById($id) {
-        $agendaForm = $this->entityManager->getRepository(Agenda::class)
+    public function getTranslation($id) {
+        $translation = $this->entityManager->getRepository(Translation::class)
                 ->findOneBy(['id' => $id], []);
 
-        return $agendaForm;
+        return $translation;
     }
-    
-        /**
+
+    /**
      *
-     * Delete a Blog object from database
-     * @param       blog $blog object
+     * Create form of an object
+     *
+     * @param       translation $translation object
+     * @return      form
+     *
+     */
+    public function createForm($translation) {
+        $builder = new AnnotationBuilder($this->entityManager);
+        $form = $builder->createForm($translation);
+        $form->setHydrator(new DoctrineHydrator($this->entityManager, 'Translator\Entities\Translator'));
+        $form->bind($translation);
+
+        return $form;
+    }
+
+    /**
+     *
+     * Create a new translation object
+     * @return      object
+     *
+     */
+    public function newTranslation() {
+        $translation = new Translation();
+        return $translation;
+    }
+
+    /**
+     *
+     * Save a translation to database
+     * @param       translation $translation object
+     * @param       user $user object
      * @return      void
      *
      */
-    public function deleteAgendaForm($agendaForm) {
-        $this->entityManager->remove($agendaForm);
+    public function saveTranslation($translation, $user) {
+        $translation->setDateCreated(new \DateTime());
+        $translation->setCreatedBy($user);
+        $this->storeTranslation($translation);
+    }
+
+    /**
+     *
+     * Update a translation to database
+     * @param       translation $translation object
+     * @param       user $user object
+     * @return      void
+     *
+     */
+    public function updateTranslation($translation, $user) {
+        $translation->setDateChanged(new \DateTime());
+        $translation->setChangedBy($user);
+        $this->storeContact($translation);
+    }
+
+    /**
+     *
+     * Save a translation to database
+     * @param       contact $translation object
+     * @return      void
+     *
+     */
+    public function storeTranslation($translation) {
+        $this->entityManager->persist($translation);
         $this->entityManager->flush();
     }
 
     /**
      *
-     * Send mail
-     * 
-     * @param       agenda $agenda object
+     * Delete a translation object from database
+     * @param       translation $translation object
      * @return      void
      *
      */
-    public function sendMail($agenda) {
-
-        $agenda_to_adress = $agenda->getEmail();
-        $agenda_to_name = $agenda->getName();
-        $subject = $agenda->getSubject();
-        $message = $agenda->getMessage();
-        $salutation = $agenda->getSalutation();
-
-        //$baseurl = $this->getBaseUrl();
-        //$config = $this->getConfig();
-        $agenda_template = 'module/Agenda/templates/send_agenda_agenda.phtml';
-        //Sender information
-        $mail_sender_agenda = 'noreply@verzeilberg.nl';
-        $mail_sender_name = 'Verzeilberg';
-        //Reply infomrtaion
-        $mail_reply_agenda = 'noreply@verzeilberg.nl';
-        $mail_reply_name = 'Verzeilberg';
-        //Mail subject
-        $mail_subject = 'Agenda met Verzeilberg: ' . $subject;
-
-        ob_start();
-        require_once($agenda_template);
-        $agenda_body = ob_get_clean();
-
-        $mail = new Mail\Message();
-        $mail->setEncoding("UTF-8");
-
-        $html = new MimePart($agenda_body);
-        $html->type = "text/html";
-
-        $body = new MimeMessage();
-        $body->setParts(array($html));
-
-        $mail->setBody($body);
-        $mail->setFrom($mail_sender_agenda, $mail_sender_name);
-        $mail->addReplyTo($mail_reply_agenda, $mail_reply_name);
-        $mail->addTo($agenda_to_adress, $agenda_to_name);
-        $mail->setSubject($mail_subject);
-
-
-        $transport = new Mail\Transport\Sendmail();
-
-        try {
-            $transport->send($mail);
-        } catch (Exception $e) {
-            echo 'Caught exception: ', $e->getMessage(), "\n";
-        }
-    }
-
-    /**
-     *
-     * Get base url
-     * 
-     * @return      string
-     *
-     */
-    public function getBaseUrl() {
-        $helper = $this->getServerUrl();
-        return $helper->__invoke($this->request->getBasePath());
+    public function deleteTranslation($translation) {
+        $this->entityManager->remove($translation);
+        $this->entityManager->flush();
     }
 
 }

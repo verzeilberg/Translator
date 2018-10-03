@@ -6,33 +6,10 @@ interface translatorServiceInterface {
 
     /**
      *
-     * Get array of translators
+     * Get array of translations
      *
      * @return      array
      *
      */
-    public function getTranslators();
-    
-    public function getTranslatorFormById($id);
-    
-    public function deleteTranslatorForm($translatorForm);
-
-    /**
-     *
-     * Send mail
-     * 
-     * @param       translator $translator object
-     * @return      void
-     *
-     */
-    public function sendMail($translator);
-
-    /**
-     *
-     * Get base url
-     * 
-     * @return      string
-     *
-     */
-    public function getBaseUrl();
+    public function getTranslations();
 }

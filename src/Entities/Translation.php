@@ -1,6 +1,6 @@
 <?php
 
-namespace Translator\Entity;
+namespace Translator\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;

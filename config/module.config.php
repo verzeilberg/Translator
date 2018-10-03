@@ -21,6 +21,14 @@ return [
             'Translator\Service\translatorServiceInterface' => 'Translator\Service\translatorService'
         ],
     ],
+    'view_helpers' => [
+        'factories' => [
+            View\Helper\Translate::class => View\Helper\Factory\TranslateFactory::class,
+        ],
+        'aliases' => [
+            'translate' => View\Helper\Translate::class,
+        ],
+    ],
     // The following section is new and should be added to your file
     'router' => [
         'routes' => [
@@ -60,11 +68,11 @@ return [
             __NAMESPACE__ . '_driver' => [
                 'class' => AnnotationDriver::class,
                 'cache' => 'array',
-                'paths' => [__DIR__ . '/../src/Entity']
+                'paths' => [__DIR__ . '/../src/Entities']
             ],
             'orm_default' => [
                 'drivers' => [
-                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                    __NAMESPACE__ . '\Entities' => __NAMESPACE__ . '_driver'
                 ]
             ]
         ]
