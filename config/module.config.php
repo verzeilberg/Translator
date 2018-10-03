@@ -11,14 +11,17 @@ return [
     'controllers' => [
         'factories' => [
             Controller\TranslatorController::class => Factory\TranslatorControllerFactory::class,
+            Controller\LanguageController::class => Factory\LanguageControllerFactory::class,
         ],
         'aliases' => [
             'translatorbeheer' => Controller\TranslatorController::class,
+            'languagebeheer' => Controller\LanguageController::class,
         ],
     ],
     'service_manager' => [
         'invokables' => [
-            'Translator\Service\translatorServiceInterface' => 'Translator\Service\translatorService'
+            'Translator\Service\translatorServiceInterface' => 'Translator\Service\translatorService',
+            'Translator\Service\languageServiceInterface' => 'Translator\Service\languageService'
         ],
     ],
     'view_helpers' => [
@@ -47,6 +50,20 @@ return [
                 ],
             ],
         ],
+        'language' => [
+                'type' => 'segment',
+                'options' => [
+                    'route' => '/language[/:action][/:id]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => 'languagebeheer',
+                        'action' => 'index',
+                    ],
+                ],
+            ],
     ],
     'view_manager' => [
         'template_path_stack' => [
@@ -60,6 +77,10 @@ return [
             'translatorbeheer' => [
                 // to anyone.
                 ['actions' => '*', 'allow' => '+translator.manage']
+            ],
+            'languagebeheer' => [
+                // to anyone.
+                ['actions' => '*', 'allow' => '+language.manage']
             ],
         ]
     ],

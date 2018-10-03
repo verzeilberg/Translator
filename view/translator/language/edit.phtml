@@ -1,0 +1,31 @@
+<?php
+$this->headTitle('Languages');
+
+$this->mainMenu()->setActiveItemId('languages');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Manage Languages' => $this->url('beheer/languages'),
+    'Edit Language' => $this->url('beheer/languages', ['action' => 'edit'])
+]);
+$form->setAttributes(array(
+    'class' => 'form-horizontal',
+    'enctype' => 'multipart/form-data'
+));
+?>
+<h1>Manage Languages</h1>
+<?php echo $this->form()->openTag($form); ?>
+<?php
+//Language form
+echo $this->partial('translator/language/partials/form.phtml', array('form' => $form, 'language' => $language));
+?>
+<!-- Image upload -->
+<?php echo $this->partial('upload-images/partial/show_image.phtml', array('formImage' => $formImage, 'image' => $image, 'returnURL' => $returnURL)); ?>
+<!-- End image upload -->
+<div class="form-group row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <button type="submit" id="submit" class="btn btn-dark">Save</button> 
+        <a href="<?php echo $this->url('beheer/languages') ?>" class="btn btn-danger" title="Annuleren">Cancel</a>
+    </div>  
+</div>
+<?php echo $this->form()->closeTag($form); ?>

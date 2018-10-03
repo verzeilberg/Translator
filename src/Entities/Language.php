@@ -1,6 +1,6 @@
 <?php
 
-namespace Customers\Entities;
+namespace Translator\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
@@ -8,9 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Application\Model\UnityOfWork;
 
 /**
- * This class represents a country item.
+ * This class represents a language item.
  * @ORM\Entity()
- * @ORM\Table(name="countries")
+ * @ORM\Table(name="languages")
  */
 class Language extends UnityOfWork {
 
@@ -42,15 +42,15 @@ class Language extends UnityOfWork {
     protected $shortName;
 
     /**
-     * One country have One Image.
+     * One language have One Image.
      * @ORM\OneToOne(targetEntity="UploadImages\Entity\Image")
      * @ORM\JoinColumn(name="image_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    private $countryImage;
+    private $languageImage;
 
     /**
      * One Language has Many translations.
-     * @ORM\OneToMany(targetEntity="Translations", mappedBy="language")
+     * @ORM\OneToMany(targetEntity="Translation", mappedBy="language")
      */
     private $translations;
 
@@ -71,7 +71,11 @@ class Language extends UnityOfWork {
     }
 
     function getLanguageImage() {
-        return $this->countryImage;
+        return $this->languageImage;
+    }
+
+    function getTranslations() {
+        return $this->translations;
     }
 
     function setId($id) {
@@ -86,26 +90,12 @@ class Language extends UnityOfWork {
         $this->shortName = $shortName;
     }
 
-    function setLanguageImage($countryImage) {
-        $this->countryImage = $countryImage;
-    }
-    
-    function getCountryImage() {
-        return $this->countryImage;
-    }
-
-    function getTranslations() {
-        return $this->translations;
-    }
-
-    function setCountryImage($countryImage) {
-        $this->countryImage = $countryImage;
+    function setLanguageImage($languageImage) {
+        $this->languageImage = $languageImage;
     }
 
     function setTranslations($translations) {
         $this->translations = $translations;
     }
-
-
 
 }
