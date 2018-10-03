@@ -1,0 +1,48 @@
+<?php
+$this->mainMenu()->setActiveItemId('overviewcontact');
+$this->pageBreadcrumbs()->setItems([
+    'Beheer' => $this->url('beheer'),
+    'Contact' => $this->url('beheer/contact'),
+]);
+?>
+<hgroup id="headAdminTitle" class="col-sm-12 col-md-12 col-lg-12">
+    <h1 id="index">CONTACT BEHEER</h1>
+</hgroup>
+<!-- Breadcrumbs -->
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <?= $this->pageBreadcrumbs()->render(); ?>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <h2>Contacten via website</h2>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>Aanhef</th>
+            <th>Naam</th>
+            <th>E-mail</th>
+            <th>Onderwerp</th>
+            <th>Verstuurd op</th>
+            <th colspan="2" class="text-center"><span class="glyphicon glyphicon-cog"></span></th>
+        </tr>
+        <?php if (count($contactForms) > 0) { ?>
+        <?php foreach ($contactForms AS $contactForm) { ?>
+            <tr>
+                <td><?php echo $contactForm->getSalutation(); ?></td>
+                <td><?php echo $contactForm->getName(); ?></td>
+                <td><?php echo $contactForm->getAgenda(); ?></td>
+                <td><?php echo $contactForm->getSubject(); ?></td>
+                <td><?php echo (is_object($contactForm->getDateCreated()) ? $contactForm->getDateCreated()->format('d-m-Y') : ''); ?></td>
+                <td class="text-center"><span class="glyphicon glyphicon-envelope"></span></td>
+                <td class="text-center">
+                    <a class="btn btn-primary" href="
+                       <?= $this->url('beheer/contact', ['action' => 'delete', 'id' => $contactForm->getId()]); ?>">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                    </a>
+                </td>
+            </tr>
+        <?php } ?>
+        <?php } else { ?>
+            <td colspan="7" class="text-center">Geen contactformulieren gevonden.</td>
+        <?php } ?>
+    </table>
+
+</div>
