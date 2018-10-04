@@ -100,7 +100,9 @@ class TranslatorController extends AbstractActionController {
         }
         
         //Get translations for translationIndex
-        $translations = $translationIndex->getTranslations();
+        $translations = $this->translatorService->getTranslationsByIndexId($translationIndex->getId());
+        
+        
         //Get languages
         $languages = $this->languageService->getLanguages();
         

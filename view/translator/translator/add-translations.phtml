@@ -13,13 +13,17 @@ $this->pageBreadcrumbs()->setItems([
 <h2 class="text-warning"><?php echo $translationIndex->getIndex(); ?></h2>
 <hr />
     <form name="add-translations" action="<?php echo $this->url('beheer/translators', ['action' => 'add-translations', 'id' => $translationIndex->getId()]); ?>" method="post">
-        <?php foreach ($languages AS $language) { ?>
+        <?php foreach ($languages AS $index => $language) { ?>
+            <?php $translationIndex = $language->getId() - 1; 
+            
+            ?>
+        
             <div class="form-group row">
                 <label class="col-sm-4 col-md-4 col-lg-4">
                     <?php echo $language->getName(); ?>
                 </label>
                 <div class="col-sm-6 col-md-6 col-lg-6">
-                    <input name="translation_<?php echo $language->getId(); ?>" type="text" class="form-control" value="" />
+                    <input name="translation_<?php echo $language->getId(); ?>" type="text" class="form-control" value="<?php echo(array_key_exists($index, $translations)? $translations[$index]['translation']:''); ?>" />
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-2">
                     <?php

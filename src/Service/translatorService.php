@@ -54,7 +54,17 @@ class translatorService implements translatorServiceInterface {
 
         return $translation;
     }
-    
+
+    public function getTranslationsByIndexId($id) {
+        $qb = $this->entityManager->getRepository(Translation::class)->createQueryBuilder('t');
+        $qb->join('t.language', 'l');
+        $qb->where('t.translationIndex = ' . $id);
+        $qb->orderBy('l.name', 'ASC');
+        $query = $qb->getQuery();
+        $result = $query->getArrayResult();
+        return $result;
+    }
+
     /**
      *
      * Create translations objects and save to database
