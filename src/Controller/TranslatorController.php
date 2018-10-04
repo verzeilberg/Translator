@@ -98,18 +98,22 @@ class TranslatorController extends AbstractActionController {
         if (empty($translationIndex)) {
             return $this->redirect()->toRoute('beheer/translators');
         }
-
+        
+        //Get translations for translationIndex
+        $translations = $translationIndex->getTranslations();
+        //Get languages
         $languages = $this->languageService->getLanguages();
         
-        
+        //Check if post
         if ($this->getRequest()->isPost()) {
             $result = $this->translatorService->saveTranslations($this->getRequest()->getPost(), $translationIndex, $this->currentUser());
         }
-        
+
         return new ViewModel(
                 array(
             'translationIndex' => $translationIndex,
-            'languages' => $languages
+            'languages' => $languages,
+            'translations' => $translations
                 )
         );
     }

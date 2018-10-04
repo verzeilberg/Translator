@@ -54,7 +54,7 @@ class translatorService implements translatorServiceInterface {
 
         return $translation;
     }
-
+    
     /**
      *
      * Create translations objects and save to database
