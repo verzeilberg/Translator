@@ -22,16 +22,6 @@ class Translation extends UnityOfWork {
     protected $id;
 
     /**
-     * @ORM\Column(name="index", type="string", length=255, nullable=false)
-     * @Annotation\Options({
-     * "label": "Index",
-     * "label_attributes": {"class": "col-sm-4 col-md-4 col-lg-4 col-form-label"}
-     * })
-     * @Annotation\Attributes({"class":"form-control", "placeholder":"Index"})
-     */
-    protected $index;
-
-    /**
      * @ORM\Column(name="translation", type="string", length=255, nullable=false)
      * @Annotation\Options({
      * "label": "Translation",
@@ -42,7 +32,14 @@ class Translation extends UnityOfWork {
     protected $translation;
 
     /**
-     * Many translations have One language.
+     * Many Translations have One Translation index.
+     * @ORM\ManyToOne(targetEntity="TranslationIndex", inversedBy="translations")
+     * @ORM\JoinColumn(name="translation_index_id", referencedColumnName="id")
+     */
+    private $translationIndex;
+
+    /**
+     * Many Translations have One language.
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="translations")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
@@ -52,28 +49,28 @@ class Translation extends UnityOfWork {
         return $this->id;
     }
 
-    function getIndex() {
-        return $this->index;
-    }
-
     function getTranslation() {
         return $this->translation;
     }
 
-    function getLanguage() {
-        return $this->language;
+    function getTranslationIndex() {
+        return $this->translationIndex;
     }
 
     function setId($id) {
         $this->id = $id;
     }
 
-    function setIndex($index) {
-        $this->index = $index;
-    }
-
     function setTranslation($translation) {
         $this->translation = $translation;
+    }
+
+    function setTranslationIndex($translationIndex) {
+        $this->translationIndex = $translationIndex;
+    }
+
+    function getLanguage() {
+        return $this->language;
     }
 
     function setLanguage($language) {

@@ -15,12 +15,14 @@ use Translator\Entities\Translation;
 class translatorService implements translatorServiceInterface {
 
     protected $entityManager;
+    protected $languageService;
 
     /**
      * Constructor.
      */
-    public function __construct($entityManager) {
+    public function __construct($entityManager, $languageService) {
         $this->entityManager = $entityManager;
+        $this->languageService = $languageService;
     }
 
     /**
@@ -51,6 +53,35 @@ class translatorService implements translatorServiceInterface {
                 ->findOneBy(['id' => $id], []);
 
         return $translation;
+    }
+
+    /**
+     *
+     * Create translations objects and save to database
+     *
+     * @param       translations  $translations array of translations
+     * @param       translationIndex $translationIndex translation index the translation must be linked to
+     * @return      void
+     *
+     */
+    public function saveTranslations($translations, $translationIndex, $user) {
+        if (count($translations) > 0) {
+            $languages = $this->languageService->getLanguages();
+
+            foreach ($languages AS $language) {
+                if (array_key_exists('translation_' . $language->getId(), $translations)) {
+                    $translation = $this->newTranslation();
+                    $value = $translations['translation_' . $language->getId()];
+                    $translation->setTranslation($value);
+                    $translation->setTranslationIndex($translationIndex);
+                    $translation->setLanguage($language);
+                    $this->saveTranslation($translation, $user);
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

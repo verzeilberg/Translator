@@ -39,6 +39,7 @@ $this->pageBreadcrumbs()->setItems([
                     <th class="text-center"><i class="fas fa-cogs"></i></th>
                 </tr>
             </thead>
+            <?php if(count($languages) > 0) { ?>
             <?php foreach ($languages as $language): ?>
                 <tr>
                     <td>
@@ -54,7 +55,7 @@ $this->pageBreadcrumbs()->setItems([
                         <?php
                         $image = $language->getLanguageImage();
                         if(is_object($image)) {
-                            echo '<img class="img-responsive " src="/' . $image->getImageTypes('450x300')[0]->getFolder() . $image->getImageTypes('450x300')[0]->getFileName() . '?v=' . rand() . '" alt="' . $image->getAlt() . '" width="25" height="auto" />';
+                            echo '<img class="border img-responsive " src="/' . $image->getImageTypes('450x300')[0]->getFolder() . $image->getImageTypes('450x300')[0]->getFileName() . '?v=' . rand() . '" alt="' . $image->getAlt() . '" width="25" height="auto" />';
                         }
                         ?>
                     </td>
@@ -67,7 +68,12 @@ $this->pageBreadcrumbs()->setItems([
                         </a>
                     </td>    
                 </tr>
-            <?php endforeach; ?>   
+            <?php endforeach; ?> 
+            <?php } else { ?>
+                <tr>
+                    <td colspan="5" class="text-center">No languages found!</td>
+                </tr>
+            <?php } ?>
         </table>
     </div>
 </div>

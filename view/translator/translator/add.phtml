@@ -1,0 +1,28 @@
+<?php
+$this->headTitle('Translations');
+
+$this->mainMenu()->setActiveItemId('translations');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Manage Translations' => $this->url('beheer/translators'),
+    'Add Language' => $this->url('beheer/translators', ['action' => 'add'])
+]);
+$form->setAttributes(array(
+    'class' => 'form-horizontal',
+    'enctype' => 'multipart/form-data'
+));
+?>
+<h1>Manage Translations</h1>
+<?php echo $this->form()->openTag($form); ?>
+<?php
+//Language form
+echo $this->partial('translator/translator/partials/form.phtml', array('form' => $form));
+?>
+<div class="form-group row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <button type="submit" id="submit" class="btn btn-success">Opslaan</button> 
+        <a href="<?php echo $this->url['beheer\translators']; ?>" class="btn btn-danger" title="Annuleren">Annuleren</a>
+    </div>  
+</div>
+<?php echo $this->form()->closeTag($form); ?>

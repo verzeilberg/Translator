@@ -30,7 +30,7 @@ class languageService implements languageServiceInterface {
     public function getLanguages() {
 
         $languagess = $this->entityManager->getRepository(Language::class)
-                ->findBy([], ['dateCreated' => 'DESC']);
+                ->findBy([], ['name' => 'ASC']);
 
         return $languagess;
     }

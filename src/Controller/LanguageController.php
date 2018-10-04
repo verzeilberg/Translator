@@ -66,7 +66,7 @@ class LanguageController extends AbstractActionController {
                 //Upload image
                 if ($imageFile['error'] === 0) {
                     //Upload original file
-                    $imageFiles = $this->cropImageService->uploadImage($imageFile, 'default', 'original', $image, 1);
+                    $imageFiles = $this->cropImageService->uploadImage($imageFile, 'language', 'original', $image, 1);
 
                     if (is_array($imageFiles)) {
                         $folderOriginal = $imageFiles['imageType']->getFolder();

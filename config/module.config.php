@@ -21,7 +21,8 @@ return [
     'service_manager' => [
         'invokables' => [
             'Translator\Service\translatorServiceInterface' => 'Translator\Service\translatorService',
-            'Translator\Service\languageServiceInterface' => 'Translator\Service\languageService'
+            'Translator\Service\languageServiceInterface' => 'Translator\Service\languageService',
+            'Translator\Service\translationIndexServiceInterface' => 'Translator\Service\translationIndexService'
         ],
     ],
     'view_helpers' => [
@@ -29,7 +30,7 @@ return [
             View\Helper\Translate::class => View\Helper\Factory\TranslateFactory::class,
         ],
         'aliases' => [
-            'translate' => View\Helper\Translate::class,
+            'translator' => View\Helper\Translate::class,
         ],
     ],
     // The following section is new and should be added to your file

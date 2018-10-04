@@ -1,0 +1,41 @@
+<?php
+$this->headTitle('Translators');
+
+$this->mainMenu()->setActiveItemId('translators');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Manage Languages' => $this->url('beheer/translators'),
+    'Edit Language' => $this->url('beheer/translators', ['action' => 'add-translations', 'id' => $translationIndex->getId()])
+]);
+?>
+<h1>Manage Translations for Translation index</h1>
+<h2 class="text-warning"><?php echo $translationIndex->getIndex(); ?></h2>
+<hr />
+    <form name="add-translations" action="<?php echo $this->url('beheer/translators', ['action' => 'add-translations', 'id' => $translationIndex->getId()]); ?>" method="post">
+        <?php foreach ($languages AS $language) { ?>
+            <div class="form-group row">
+                <label class="col-sm-4 col-md-4 col-lg-4">
+                    <?php echo $language->getName(); ?>
+                </label>
+                <div class="col-sm-6 col-md-6 col-lg-6">
+                    <input name="translation_<?php echo $language->getId(); ?>" type="text" class="form-control" value="" />
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                    <?php
+                    $image = $language->getLanguageImage();
+                    if (is_object($image)) {
+                        echo '<img class="border img-responsive " src="/' . $image->getImageTypes('450x300')[0]->getFolder() . $image->getImageTypes('450x300')[0]->getFileName() . '?v=' . rand() . '" alt="' . $image->getAlt() . '" width="25" height="auto" />';
+                    }
+                    ?>
+                </div>
+            </div>
+        <?php } ?>
+        <hr />
+        <div class="form-group row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <button type="submit" id="submit" class="btn btn-dark">Save</button> 
+                <a href="<?php echo $this->url('beheer/languages') ?>" class="btn btn-danger" title="Annuleren">Cancel</a>
+            </div>  
+        </div>
+    </form>

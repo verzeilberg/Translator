@@ -11,7 +11,8 @@ class Translate extends AbstractHelper {
 
         $translations = [
             'bla' => 'blub',
-            'blow' => 'blop'
+            'blow' => 'blop',
+            'no.customers.found' => 'No customers found!'
         ];
 
         if (array_key_exists($translation, $translations)) {

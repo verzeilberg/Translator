@@ -1,0 +1,11 @@
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="form-group row">
+        <?php echo $this->formLabel($form->get('index')); ?>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <?php echo $this->formText($form->get('index')); ?>
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-2">
+            <?php echo (count($form->getMessages('index')) > 0 ? $form->getMessages('index')['isEmpty'] : '&nbsp;' ) ?>
+        </div>
+    </div>
+</div>
