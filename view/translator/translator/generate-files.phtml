@@ -16,9 +16,9 @@ $this->pageBreadcrumbs()->setItems([
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Languages</th>
+                    <th><i class="fas fa-globe-americas"></i></th>
                     <th class="text-center"><i class="far fa-flag"></i></th>
-                    <th class="text-center">File generated on</th>
+                    <th class="text-center"><i class="fas fa-calendar-alt"></i></th>
                     <th class="text-center"><i class="fas fa-cogs"></i></th>
                 </tr>
             </thead>
@@ -34,7 +34,7 @@ $this->pageBreadcrumbs()->setItems([
                             }
                             ?>
                         </td>
-                        <td>
+                        <td class="text-center">
                             <?php echo (is_object($language->getGeneratedFileDate())? $language->getGeneratedFileDate()->format('d-m-Y H:i:s'):''); ?>
                         </td>
                         <td class="text-center">

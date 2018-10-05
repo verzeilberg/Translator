@@ -85,6 +85,9 @@ return [
             ],
         ]
     ],
+    'translatorSettings' => [
+        'defaultLanguage' => 'jap',
+    ],
     'doctrine' => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [

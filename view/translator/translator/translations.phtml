@@ -12,7 +12,7 @@ $this->pageBreadcrumbs()->setItems([
 <h1>Manage Translations for Translation index</h1>
 <h2 class="text-warning"><?php echo $translationIndex->getIndex(); ?></h2>
 <hr />
-    <form name="add-translations" action="<?php echo $this->url('beheer/translators', ['action' => 'add-translations', 'id' => $translationIndex->getId()]); ?>" method="post">
+    <form name="add-translations" action="<?php echo $this->url('beheer/translators', ['action' => 'translations', 'id' => $translationIndex->getId()]); ?>" method="post">
         <?php foreach ($languages AS $index => $language) { ?>
             <?php $translationIndex = $language->getId() - 1; 
             

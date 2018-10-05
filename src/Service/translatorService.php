@@ -126,7 +126,9 @@ class translatorService implements translatorServiceInterface {
         //Create data for file
         $fileContent = '<?php' . PHP_EOL;
         $fileContent .= 'return [' . PHP_EOL;
+        $fileContent .= '"translations" =>  [' . PHP_EOL;
         $fileContent .= $languageFileData;
+        $fileContent .= '],'. PHP_EOL;
         $fileContent .= '];';
         
         //Try to save data to file

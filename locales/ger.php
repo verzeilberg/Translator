@@ -1,5 +1,7 @@
 <?php
 return [
-'no.customers.found'  => 'Keine ertalungen gefunden',
+"translations" =>  [
+'no.customers.found'  => 'Keine kunde gefunden',
 'no.languages.found'  => ' Keine Sprachen gefunden',
+],
 ];
