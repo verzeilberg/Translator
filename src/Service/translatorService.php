@@ -57,12 +57,16 @@ class translatorService implements translatorServiceInterface {
 
     public function getTranslationsByIndexId($id) {
         $qb = $this->entityManager->getRepository(Translation::class)->createQueryBuilder('t');
-        $qb->join('t.language', 'l');
         $qb->where('t.translationIndex = ' . $id);
-        $qb->orderBy('l.name', 'ASC');
         $query = $qb->getQuery();
-        $result = $query->getArrayResult();
-        return $result;
+        $result = $query->getResult();
+        $translations = [];
+        foreach ($result AS $item) {
+            $translations[$item->getLanguage()->getId()]['id'] = $item->getId();
+            $translations[$item->getLanguage()->getId()]['translation'] = $item->getTranslation();
+            $translations[$item->getLanguage()->getId()]['translationIndex'] = $item->getTranslationIndex()->getId();
+        }
+        return $translations;
     }
 
     /**
@@ -79,17 +83,58 @@ class translatorService implements translatorServiceInterface {
             $languages = $this->languageService->getLanguages();
 
             foreach ($languages AS $language) {
-                if (array_key_exists('translation_' . $language->getId(), $translations)) {
-                    $translation = $this->newTranslation();
-                    $value = $translations['translation_' . $language->getId()];
-                    $translation->setTranslation($value);
-                    $translation->setTranslationIndex($translationIndex);
-                    $translation->setLanguage($language);
-                    $this->saveTranslation($translation, $user);
+                if (array_key_exists('languages_' . $language->getId(), $translations)) {
+
+                    if (array_key_exists('translation_' . $language->getId(), $translations)) {
+                        $translationId = $translations['translation_' . $language->getId()];
+                        $translation = $this->getTranslation($translationId);
+                        $value = $translations['languages_' . $language->getId()];
+                        $translation->setTranslation($value);
+                        $this->updateTranslation($translation, $user);
+                    } else {
+                        $translation = $this->newTranslation();
+                        $value = $translations['languages_' . $language->getId()];
+                        $translation->setTranslation($value);
+                        $translation->setTranslationIndex($translationIndex);
+                        $translation->setLanguage($language);
+                        $this->saveTranslation($translation, $user);
+                    }
                 }
             }
             return true;
         } else {
+            return false;
+        }
+    }
+
+    /**
+     *
+     * Generate language file
+     *
+     * @param       language $language object
+     * @return      void
+     *
+     */
+    public function generateLanguageFile($language) {
+        //Get translations
+        $translations = $language->getTranslations();
+        //Set data for languages file
+        $languageFileData = '';
+        foreach ($translations AS $translation) {
+            $languageFileData .= "'" . $translation->getTranslationIndex()->getIndex() . "'  => '" . $translation->getTranslation() . "'," . PHP_EOL;
+        }
+        //Create data for file
+        $fileContent = '<?php' . PHP_EOL;
+        $fileContent .= 'return [' . PHP_EOL;
+        $fileContent .= $languageFileData;
+        $fileContent .= '];';
+        
+        //Try to save data to file
+        try {
+            //Set data to file
+            file_put_contents(__DIR__ . '/..//../locales/' . strtolower($language->getShortName()) . '.php', $fileContent);
+            return true;
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -147,7 +192,7 @@ class translatorService implements translatorServiceInterface {
     public function updateTranslation($translation, $user) {
         $translation->setDateChanged(new \DateTime());
         $translation->setChangedBy($user);
-        $this->storeContact($translation);
+        $this->storeTranslation($translation);
     }
 
     /**

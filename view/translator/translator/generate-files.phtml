@@ -1,0 +1,55 @@
+<?php
+$this->headTitle('Translators');
+
+$this->mainMenu()->setActiveItemId('translators');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Manage Languages' => $this->url('beheer/translators', ['action' => 'generate-files']),
+]);
+?>
+<div class="row">
+    <h1 class="col">Generate translation files</h1>
+</div>
+<div class="row mt-3">
+    <div class="col">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Languages</th>
+                    <th class="text-center"><i class="far fa-flag"></i></th>
+                    <th class="text-center">File generated on</th>
+                    <th class="text-center"><i class="fas fa-cogs"></i></th>
+                </tr>
+            </thead>
+            <?php if (count($languages) > 0) { ?>
+                <?php foreach ($languages as $language): ?>
+                    <tr>
+                        <td><?= $this->escapeHtml($language->getName()); ?></td>
+                        <td class="text-center">
+                            <?php
+                            $image = $language->getLanguageImage();
+                            if (is_object($image)) {
+                                echo '<img class="border img-responsive " src="/' . $image->getImageTypes('450x300')[0]->getFolder() . $image->getImageTypes('450x300')[0]->getFileName() . '?v=' . rand() . '" alt="' . $image->getAlt() . '" width="25" height="auto" />';
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <?php echo (is_object($language->getGeneratedFileDate())? $language->getGeneratedFileDate()->format('d-m-Y H:i:s'):''); ?>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-dark" href="<?= $this->url('beheer/translators', ['action' => 'generate-file', 'id' => $language->getId()]); ?>">
+                            <i class="fas fa-cog"></i> Generate
+                        </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?> 
+            <?php } else { ?>
+                <tr>
+                    <td colspan="5" class="text-center">No languages found!</td>
+                </tr>
+            <?php } ?>
+        </table>
+    </div>
+</div>
+

@@ -42,6 +42,11 @@ class Language extends UnityOfWork {
     protected $shortName;
 
     /**
+     * @ORM\Column(name="generated_file_date", type="datetime", nullable=true)
+     */
+    protected $generatedFileDate;
+
+    /**
      * One language have One Image.
      * @ORM\OneToOne(targetEntity="UploadImages\Entity\Image")
      * @ORM\JoinColumn(name="image_id", referencedColumnName="id", onDelete="SET NULL")
@@ -97,5 +102,14 @@ class Language extends UnityOfWork {
     function setTranslations($translations) {
         $this->translations = $translations;
     }
+    
+    function getGeneratedFileDate() {
+        return $this->generatedFileDate;
+    }
+
+    function setGeneratedFileDate($generatedFileDate) {
+        $this->generatedFileDate = $generatedFileDate;
+    }
+
 
 }

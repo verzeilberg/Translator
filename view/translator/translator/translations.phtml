@@ -6,20 +6,27 @@ $this->mainMenu()->setActiveItemId('translators');
 $this->pageBreadcrumbs()->setItems([
     'Home' => $this->url('home'),
     'Manage Languages' => $this->url('beheer/translators'),
-    'Edit Language' => $this->url('beheer/translators', ['action' => 'edit-translations', 'id' => $translationIndex->getId()])
+    'Edit Language' => $this->url('beheer/translators', ['action' => 'add-translations', 'id' => $translationIndex->getId()])
 ]);
 ?>
 <h1>Manage Translations for Translation index</h1>
 <h2 class="text-warning"><?php echo $translationIndex->getIndex(); ?></h2>
 <hr />
-    <form name="add-translations" action="<?php echo $this->url('beheer/translators', ['action' => 'edit-translations', 'id' => $translationIndex->getId()]); ?>" method="post">
-        <?php foreach ($languages AS $language) { ?>
+    <form name="add-translations" action="<?php echo $this->url('beheer/translators', ['action' => 'add-translations', 'id' => $translationIndex->getId()]); ?>" method="post">
+        <?php foreach ($languages AS $index => $language) { ?>
+            <?php $translationIndex = $language->getId() - 1; 
+            
+            ?>
+        
             <div class="form-group row">
                 <label class="col-sm-4 col-md-4 col-lg-4">
                     <?php echo $language->getName(); ?>
                 </label>
                 <div class="col-sm-6 col-md-6 col-lg-6">
-                    <input name="translation_<?php echo $language->getId(); ?>" type="text" class="form-control" value="" />
+                    <input name="languages_<?php echo $language->getId(); ?>" type="text" class="form-control" value="<?php echo(array_key_exists($language->getId(), $translations)? $translations[$language->getId()]['translation']:''); ?>" />
+                    <?php if (array_key_exists($language->getId(), $translations)) { ?>
+                        <input name="translation_<?php echo $language->getId(); ?>" type="hidden" value="<?php echo $translations[$language->getId()]['id']; ?>" />
+                    <?php } ?>
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-2">
                     <?php
@@ -35,7 +42,7 @@ $this->pageBreadcrumbs()->setItems([
         <div class="form-group row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <button type="submit" id="submit" class="btn btn-dark">Save</button> 
-                <a href="<?php echo $this->url('beheer/languages') ?>" class="btn btn-danger" title="Annuleren">Cancel</a>
+                <a href="<?php echo $this->url('beheer/translators') ?>" class="btn btn-danger" title="Annuleren">Cancel</a>
             </div>  
         </div>
     </form>

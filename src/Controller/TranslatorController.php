@@ -89,7 +89,7 @@ class TranslatorController extends AbstractActionController {
         );
     }
 
-    public function addTranslationsAction() {
+    public function translationsAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (empty($id)) {
             return $this->redirect()->toRoute('beheer/translators');
@@ -98,19 +98,14 @@ class TranslatorController extends AbstractActionController {
         if (empty($translationIndex)) {
             return $this->redirect()->toRoute('beheer/translators');
         }
-        
-        //Get translations for translationIndex
-        $translations = $this->translatorService->getTranslationsByIndexId($translationIndex->getId());
-        
-        
-        //Get languages
-        $languages = $this->languageService->getLanguages();
-        
         //Check if post
         if ($this->getRequest()->isPost()) {
             $result = $this->translatorService->saveTranslations($this->getRequest()->getPost(), $translationIndex, $this->currentUser());
         }
-
+        //Get translations for translationIndex
+        $translations = $this->translatorService->getTranslationsByIndexId($translationIndex->getId());
+        //Get languages
+        $languages = $this->languageService->getLanguages();
         return new ViewModel(
                 array(
             'translationIndex' => $translationIndex,
@@ -118,6 +113,38 @@ class TranslatorController extends AbstractActionController {
             'translations' => $translations
                 )
         );
+    }
+
+    public function generateFilesAction() {
+        //Get languages
+        $languages = $this->languageService->getLanguages();
+
+
+        return new ViewModel(
+                array(
+            'languages' => $languages
+                )
+        );
+    }
+    
+    public function generateFileAction() {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (empty($id)) {
+            return $this->redirect()->toRoute('beheer/translators');
+        }
+        $language = $this->languageService->getLanguage($id);
+        if (empty($language)) {
+            return $this->redirect()->toRoute('beheer/translators');
+        }
+        $result = $this->translatorService->generateLanguageFile($language);
+        if($result){
+            $language->setGeneratedFileDate(new \DateTime());
+            $this->languageService->storeLanguage($language);
+            $this->flashMessenger()->addSuccessMessage($language->getName() . ' Language file generated');
+        } else {
+            $this->flashMessenger()->addErrorMessage($language->getName() . ' Language file not generate');
+        }
+        return $this->redirect()->toRoute('beheer/translators', array('action' => 'generate-files'));
     }
 
 }

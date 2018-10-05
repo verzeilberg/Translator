@@ -15,7 +15,11 @@ $this->pageBreadcrumbs()->setItems([
     <div class="col">
         <a class="btn btn-dark" href="
            <?= $this->url('beheer/translators', ['action' => 'add']); ?>">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Translation index
+            <i class="fas fa-plus"></i> New Translation index
+        </a>
+        <a class="btn btn-dark" href="
+           <?= $this->url('beheer/translators', ['action' => 'generate-files']); ?>">
+            <i class="fas fa-file-code"></i> Generate languages files
         </a>
     </div>
     <div class="col text-right">
@@ -47,7 +51,7 @@ $this->pageBreadcrumbs()->setItems([
                         <?= (is_object($translationIndex->getDateCreated()) ? $this->escapeHtml($translationIndex->getDateCreated()->format('Y-m-d')) : ''); ?>
                     </td> 
                     <td class="text-center">
-                        <a class="btn btn-sm btn-warning" href="<?= $this->url('beheer/translators', ['action' => 'add-translations', 'id' => $translationIndex->getId()]); ?>">
+                        <a class="btn btn-sm btn-warning" href="<?= $this->url('beheer/translators', ['action' => 'translations', 'id' => $translationIndex->getId()]); ?>">
                             <i class="far fa-calendar-plus"></i>
                         </a>
                         <a class="btn btn-sm btn-dark" href="<?= $this->url('beheer/translators', ['action' => 'edit', 'id' => $translationIndex->getId()]); ?>">
