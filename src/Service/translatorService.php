@@ -151,6 +151,8 @@ class translatorService implements translatorServiceInterface {
      *
      */
     public function defaultLanguages() {
+        
+        //First create default languages
         $english = $this->languageService->newLanguage();
         $english->setName('English');
         $english->setShortName('ENG');
@@ -169,6 +171,20 @@ class translatorService implements translatorServiceInterface {
             $translationIndex = $this->translationIndexService->saveTranslation($translationIndex, NULL);
         }
         
+        foreach($this->defaultTranslations() AS $languageIndex => $defaultTranslation) {
+            foreach($defaultTranslation AS $index => $translation) {
+               $translationIndex = $this->translationIndexService->getTranslationIndexByIndex($index);
+               $translationObject = $this->newTranslation();
+               $translationObject->setTranslation($translation);
+               $translationObject->setTranslationIndex($translationIndex);
+               if($languageIndex == 'Dutch') {
+                   $language = $dutch;
+               } else {
+                   $language = $english;
+               }
+               $translationObject->setLanguage($language);
+            }
+        }
     }
 
     private function getDefaultIndexes() {
@@ -236,6 +252,13 @@ class translatorService implements translatorServiceInterface {
             'save' => 'Opslaan',
             'cancel' => 'Annuleren',
         ];
+        
+        $defaultTranslations = [];
+        $defaultTranslations['English'] = $englishDefaultTranslations;
+        $defaultTranslations['Dutch'] = $dutchDefaultTranslations;    
+        
+        return $defaultTranslations;
+        
     }
 
     /**

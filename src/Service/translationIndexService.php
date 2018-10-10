@@ -52,6 +52,21 @@ class translationIndexService implements translationIndexServiceInterface {
 
         return $translationIndex;
     }
+    
+    /**
+     *
+     * Get translationIndex object based on index
+     *
+     * @param       index  $index The index to fetch the translationIndex from the database
+     * @return      object
+     *
+     */
+    public function getTranslationIndexByIndex($index) {
+        $translationIndex = $this->entityManager->getRepository(TranslationIndex::class)
+                ->findOneBy(['index' => $index], []);
+
+        return $translationIndex;
+    }
 
     /**
      *
