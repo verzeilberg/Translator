@@ -120,6 +120,8 @@ class translatorService implements translatorServiceInterface {
     public function generateLanguageFile($language) {
         //Get translations
         $translations = $language->getTranslations();
+        
+        var_Dump(count($translations));
         //Set data for languages file
         $languageFileData = '';
         foreach ($translations AS $translation) {
@@ -136,7 +138,7 @@ class translatorService implements translatorServiceInterface {
         //Try to save data to file
         try {
             //Set data to file
-            file_put_contents(__DIR__ . '/..//../locales/' . strtolower($language->getShortName()) . '.php', $fileContent);
+            file_put_contents(__DIR__ . '\..\..\locales\/' . strtolower($language->getShortName()) . '.php', $fileContent);
             return true;
         } catch (Exception $e) {
             return false;
@@ -154,11 +156,13 @@ class translatorService implements translatorServiceInterface {
         
         //First create default languages
         $english = $this->languageService->newLanguage();
+        $english->setId(1);
         $english->setName('English');
         $english->setShortName('ENG');
         $this->languageService->saveLanguage($english, NULL);
 
         $dutch = $this->languageService->newLanguage();
+        $dutch->setId(2);
         $dutch->setName('Dutch');
         $dutch->setShortName('NED');
         $this->languageService->saveLanguage($dutch, NULL);
@@ -183,8 +187,12 @@ class translatorService implements translatorServiceInterface {
                    $language = $english;
                }
                $translationObject->setLanguage($language);
+               $this->saveTranslation($translationObject, NULL);
             }
         }
+        $this->generateLanguageFile($english);
+        $this->generateLanguageFile($dutch);
+        
     }
 
     private function getDefaultIndexes() {
@@ -236,21 +244,21 @@ class translatorService implements translatorServiceInterface {
         ];
 
         $englishDefaultTranslations = [
-            'translator.head.title' => 'Vertalingen',
-            'translator.new.index' => 'Nieuwe index',
-            'translator.generate.languages.files' => 'Genereer vertalings bestanden',
-            'search.placeholder' => 'Zoeken',
-            'no.translation.indexes.found' => 'Geen indexes gevonden!',
-            'translator.table.index.title' => 'Naam',
-            'translator.table.creation.date.title' => 'Aanmaak datum',
-            'translator.head.title.add.index' => 'Voeg nieuwe index toe',
-            'translator.head.title.edit.index' => 'Wijzig index',
-            'translator.head.title.manage.translations.index' => 'Beheer vertalingen voor indexes',
-            'translator.head.title.generate.files' => 'Genereer vertalings bestanden',
-            'button.generate' => 'Genereer',
-            'no.translation.files.found' => 'Geen talen voor bestanden gevonden!',
-            'save' => 'Opslaan',
-            'cancel' => 'Annuleren',
+            'translator.head.title' => 'Translations',
+            'translator.new.index' => 'New index',
+            'translator.generate.languages.files' => 'Generate translation files',
+            'search.placeholder' => 'Search',
+            'no.translation.indexes.found' => 'No indexes found!',
+            'translator.table.index.title' => 'Name',
+            'translator.table.creation.date.title' => 'Creation date',
+            'translator.head.title.add.index' => 'Add new index',
+            'translator.head.title.edit.index' => 'Change index',
+            'translator.head.title.manage.translations.index' => 'Manage translation for indexes',
+            'translator.head.title.generate.files' => 'Generate translation files',
+            'button.generate' => 'Generate',
+            'no.translation.files.found' => 'No languaes files found!',
+            'save' => 'Save',
+            'cancel' => 'Cancel',
         ];
         
         $defaultTranslations = [];

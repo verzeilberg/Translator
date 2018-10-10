@@ -9,7 +9,7 @@ $this->pageBreadcrumbs()->setItems([
     'Edit Language' => $this->url('beheer/translators', ['action' => 'add-translations', 'id' => $translationIndex->getId()])
 ]);
 ?>
-<h1><?php echo $this->translator()->translation('translator.head.title.manage.translations.index'); ?></h1>
+<h1><?php echo $this->translator()->translate('translator.head.title.manage.translations.index'); ?></h1>
 <h2 class="text-warning"><?php echo $translationIndex->getIndex(); ?></h2>
 <hr />
     <form name="add-translations" action="<?php echo $this->url('beheer/translators', ['action' => 'translations', 'id' => $translationIndex->getId()]); ?>" method="post">

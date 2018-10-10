@@ -1,0 +1,79 @@
+<?php
+$this->headTitle('Languages');
+
+$this->mainMenu()->setActiveItemId('languages');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Manage Languages' => $this->url('beheer/languages'),
+]);
+?>
+<div class="row">
+    <h1 class="col">Manage Languages</h1>
+</div>
+<div class="row">
+    <div class="col">
+        <a class="btn btn-dark" href="
+           <?= $this->url('beheer/languages', ['action' => 'add']); ?>">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Language
+        </a>
+    </div>
+    <div class="col text-right">
+        <form class="form-inline" name="searchLanguage" method="post" action="<?php echo $this->url('beheer/languages'); ?>">
+            <div class="col text-right" style="padding-right:0;">
+                <input class="form-control" name="search" value="<?php echo $searchString; ?>" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-dark" type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Shortname</th>
+                    <th>Name</th>
+                    <th>Date Created</th>
+                    <th class="text-center"><i class="far fa-flag"></i></th>
+                    <th class="text-center"><i class="fas fa-cogs"></i></th>
+                </tr>
+            </thead>
+            <?php if(count($languages) > 0) { ?>
+            <?php foreach ($languages as $language): ?>
+                <tr>
+                    <td>
+                        <?= $this->escapeHtml($language->getShortName()); ?></a> 
+                    </td>
+                    <td>
+                        <?= $this->escapeHtml($language->getName()); ?></a> 
+                    </td>
+                    <td>
+                        <?= (is_object($language->getDateCreated()) ? $this->escapeHtml($language->getDateCreated()->format('Y-m-d')) : ''); ?>
+                    </td> 
+                    <td class="text-center">
+                        <?php
+                        $image = $language->getLanguageImage();
+                        if(is_object($image)) {
+                            echo '<img class="border img-responsive " src="/' . $image->getImageTypes('450x300')[0]->getFolder() . $image->getImageTypes('450x300')[0]->getFileName() . '?v=' . rand() . '" alt="' . $image->getAlt() . '" width="25" height="auto" />';
+                        }
+                        ?>
+                    </td>
+                    <td class="text-center">
+                        <a class="btn btn-sm btn-dark" href="<?= $this->url('beheer/languages', ['action' => 'edit', 'id' => $language->getId()]); ?>">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-sm btn-danger" href="<?= $this->url('beheer/languages', ['action' => 'delete', 'id' => $language->getId()]); ?>">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>    
+                </tr>
+            <?php endforeach; ?> 
+            <?php } else { ?>
+                <tr>
+                    <td colspan="5" class="text-center">No languages found!</td>
+                </tr>
+            <?php } ?>
+        </table>
+    </div>
+</div>

@@ -52,6 +52,21 @@ class languageService implements languageServiceInterface {
     
         /**
      *
+     * Get languages object by on short name
+     *
+     * @param       shortName  $shortName The short name to fetch the languages from the database
+     * @return      object
+     *
+     */
+    public function getLanguageByShortName($shortName) {
+        $language = $this->entityManager->getRepository(Language::class)
+                ->findOneBy(['shortName' => $shortName], []);
+
+        return $language;
+    }
+    
+        /**
+     *
      * Get array of languages
      * @var $searchString string to search for
      *

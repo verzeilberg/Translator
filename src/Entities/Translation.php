@@ -40,7 +40,7 @@ class Translation extends UnityOfWork {
 
     /**
      * Many Translations have One language.
-     * @ORM\ManyToOne(targetEntity="Language", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="Language", inversedBy="translations", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
     private $language;

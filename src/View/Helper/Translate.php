@@ -9,7 +9,7 @@ use Zend\Session\Container;
 class Translate extends AbstractHelper {
 
     protected $config;
-    protected $translations;
+    protected $translations = null;
 
     function __construct($config) {
         $this->config = $config;
@@ -18,7 +18,10 @@ class Translate extends AbstractHelper {
 
     public function translate($translation) {
 
-        if (array_key_exists($translation, $this->translations['translations'])) {
+        
+        
+        
+        if (is_array($this->translations['translations']) && array_key_exists($translation, $this->translations['translations'])) {
             $result = $this->translations['translations'][$translation];
         } else {
             $result = $translation;
@@ -37,8 +40,10 @@ class Translate extends AbstractHelper {
         } else {
             $language = $this->config['translatorSettings']['defaultLanguage'];
         }
-        
-        $this->translations = include_once (__DIR__ . '\..\..\..\locales\/' . $language . '.php');
+
+        if (file_exists(__DIR__ . '\..\..\..\locales\/' . $language . '.php')) {
+            $this->translations = include_once (__DIR__ . '\..\..\..\locales\/' . $language . '.php');
+        }
     }
 
 }

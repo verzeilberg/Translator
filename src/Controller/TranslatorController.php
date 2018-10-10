@@ -24,6 +24,7 @@ class TranslatorController extends AbstractActionController {
     public function indexAction() {
         $translationIndexes = $this->translationIndexService->getTranslationIndexes();
 
+        
         $searchString = '';
         if ($this->getRequest()->isPost()) {
             $searchString = $this->getRequest()->getPost('search');
