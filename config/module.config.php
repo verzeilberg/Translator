@@ -86,7 +86,7 @@ return [
         ]
     ],
     'translatorSettings' => [
-        'defaultLanguage' => 'jap',
+        'defaultLanguage' => 'ned',
     ],
     'doctrine' => [
         'driver' => [

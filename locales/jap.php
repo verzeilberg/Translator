@@ -1,7 +1,9 @@
 <?php
 return [
 "translations" =>  [
-'no.customers.found'  => '顧客が見つかりません',
-'no.languages.found'  => '言語が見つかりません',
+'no.users.found'  => 'fsldfhdlsafh',
+'customer.name'  => 'fsldfhdlsafh',
+'customer.date.created'  => 'dsad',
+'customer.language'  => '',
 ],
 ];

@@ -19,8 +19,8 @@ class TranslatorControllerFactory implements FactoryInterface {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $vhm = $container->get('ViewHelperManager');
         $languageService = new languageService($entityManager);
-        $translatorService = new translatorService($entityManager, $languageService);
         $translationIndexService = new translationIndexService($entityManager);
+        $translatorService = new translatorService($entityManager, $languageService, $translationIndexService);
         return new TranslatorController(
                 $vhm, 
                 $entityManager, 

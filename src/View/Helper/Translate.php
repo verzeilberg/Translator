@@ -3,6 +3,7 @@
 namespace Translator\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
+use Zend\Session\Container;
 
 // This view helper class translate text
 class Translate extends AbstractHelper {
@@ -12,8 +13,7 @@ class Translate extends AbstractHelper {
 
     function __construct($config) {
         $this->config = $config;
-        $language = $this->config['translatorSettings']['defaultLanguage'];
-        $this->translations = include_once (__DIR__ . '\..\..\..\locales\/'.$language.'.php');
+        $this->setLanguageFile();
     }
 
     public function translate($translation) {
@@ -25,6 +25,20 @@ class Translate extends AbstractHelper {
         }
 
         return $result;
+    }
+
+    private function setLanguageFile() {
+        $container = new Container('Language');
+        $name = $container->offsetGet('name');
+        $shortName = $container->offsetGet('shortName');
+
+        if (isset($name)) {
+            $language = $shortName;
+        } else {
+            $language = $this->config['translatorSettings']['defaultLanguage'];
+        }
+        
+        $this->translations = include_once (__DIR__ . '\..\..\..\locales\/' . $language . '.php');
     }
 
 }

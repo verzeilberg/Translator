@@ -55,7 +55,7 @@ class Language extends UnityOfWork {
 
     /**
      * One Language has Many translations.
-     * @ORM\OneToMany(targetEntity="Translation", mappedBy="language")
+     * @ORM\OneToMany(targetEntity="Translation", mappedBy="language", orphanRemoval=true)
      */
     private $translations;
 

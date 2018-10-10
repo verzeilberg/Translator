@@ -33,7 +33,7 @@ class TranslationIndex extends UnityOfWork {
 
      /**
      * One Translation index has Many translations.
-     * @ORM\OneToMany(targetEntity="Translation", mappedBy="translationIndex")
+     * @ORM\OneToMany(targetEntity="Translation", mappedBy="translationIndex", orphanRemoval=true)
      */
     private $translations;
 

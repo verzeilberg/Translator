@@ -88,6 +88,20 @@ class TranslatorController extends AbstractActionController {
                 )
         );
     }
+    
+    public function deleteAction() { 
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (empty($id)) {
+            return $this->redirect()->toRoute('beheer/translators');
+        }
+        $translationIndex = $this->translationIndexService->getTranslationIndex($id);
+        if (empty($translationIndex)) {
+            return $this->redirect()->toRoute('beheer/translators');
+        }
+        $this->translationIndexService->deleteTranslationIndex($translationIndex);
+        $this->flashMessenger()->addSuccessMessage('Translation index removed');
+        return $this->redirect()->toRoute('beheer/translators');
+    }
 
     public function translationsAction() {
         $id = (int) $this->params()->fromRoute('id', 0);

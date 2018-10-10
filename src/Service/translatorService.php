@@ -16,13 +16,15 @@ class translatorService implements translatorServiceInterface {
 
     protected $entityManager;
     protected $languageService;
+    protected $translationIndexService;
 
     /**
      * Constructor.
      */
-    public function __construct($entityManager, $languageService) {
+    public function __construct($entityManager, $languageService, $translationIndexService) {
         $this->entityManager = $entityManager;
         $this->languageService = $languageService;
+        $this->translationIndexService = $translationIndexService;
     }
 
     /**
@@ -128,9 +130,9 @@ class translatorService implements translatorServiceInterface {
         $fileContent .= 'return [' . PHP_EOL;
         $fileContent .= '"translations" =>  [' . PHP_EOL;
         $fileContent .= $languageFileData;
-        $fileContent .= '],'. PHP_EOL;
+        $fileContent .= '],' . PHP_EOL;
         $fileContent .= '];';
-        
+
         //Try to save data to file
         try {
             //Set data to file
@@ -139,6 +141,101 @@ class translatorService implements translatorServiceInterface {
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    /**
+     *
+     * Set default languages
+     *
+     * @return      void
+     *
+     */
+    public function defaultLanguages() {
+        $english = $this->languageService->newLanguage();
+        $english->setName('English');
+        $english->setShortName('ENG');
+        $this->languageService->saveLanguage($english, NULL);
+
+        $dutch = $this->languageService->newLanguage();
+        $dutch->setName('Dutch');
+        $dutch->setShortName('NED');
+        $this->languageService->saveLanguage($dutch, NULL);
+        
+        $defaultIndexes = $this->getDefaultIndexes();
+        
+        foreach($defaultIndexes AS $index) {
+            $translationIndex = $this->translationIndexService->newTranslationIndex();
+            $translationIndex->setIndex($index);
+            $translationIndex = $this->translationIndexService->saveTranslation($translationIndex, NULL);
+        }
+        
+    }
+
+    private function getDefaultIndexes() {
+        $defaultIndexes = [
+            'translator.head.title',
+            'translator.new.index',
+            'translator.generate.languages.files',
+            'search.placeholder',
+            'no.translation.indexes.found',
+            'translator.table.index.title',
+            'translator.table.creation.date.title',
+            'translator.head.title.add.index',
+            'translator.head.title.edit.index',
+            'translator.head.title.manage.translations.index',
+            'translator.head.title.generate.files',
+            'button.generate',
+            'no.translation.files.found',
+            'save',
+            'cancel'
+        ];
+
+        return $defaultIndexes;
+    }
+
+    /**
+     *
+     * Set default translations
+     *
+     * @return      void
+     *
+     */
+    public function defaultTranslations() {
+        $dutchDefaultTranslations = [
+            'translator.head.title' => 'Vertalingen',
+            'translator.new.index' => 'Nieuwe index',
+            'translator.generate.languages.files' => 'Genereer vertalings bestanden',
+            'search.placeholder' => 'Zoeken',
+            'no.translation.indexes.found' => 'Geen indexes gevonden!',
+            'translator.table.index.title' => 'Naam',
+            'translator.table.creation.date.title' => 'Aanmaak datum',
+            'translator.head.title.add.index' => 'Voeg nieuwe index toe',
+            'translator.head.title.edit.index' => 'Wijzig index',
+            'translator.head.title.manage.translations.index' => 'Beheer vertalingen voor indexes',
+            'translator.head.title.generate.files' => 'Genereer vertalings bestanden',
+            'button.generate' => 'Genereer',
+            'no.translation.files.found' => 'Geen talen voor bestanden gevonden!',
+            'save' => 'Opslaan',
+            'cancel' => 'Annuleren',
+        ];
+
+        $englishDefaultTranslations = [
+            'translator.head.title' => 'Vertalingen',
+            'translator.new.index' => 'Nieuwe index',
+            'translator.generate.languages.files' => 'Genereer vertalings bestanden',
+            'search.placeholder' => 'Zoeken',
+            'no.translation.indexes.found' => 'Geen indexes gevonden!',
+            'translator.table.index.title' => 'Naam',
+            'translator.table.creation.date.title' => 'Aanmaak datum',
+            'translator.head.title.add.index' => 'Voeg nieuwe index toe',
+            'translator.head.title.edit.index' => 'Wijzig index',
+            'translator.head.title.manage.translations.index' => 'Beheer vertalingen voor indexes',
+            'translator.head.title.generate.files' => 'Genereer vertalings bestanden',
+            'button.generate' => 'Genereer',
+            'no.translation.files.found' => 'Geen talen voor bestanden gevonden!',
+            'save' => 'Opslaan',
+            'cancel' => 'Annuleren',
+        ];
     }
 
     /**

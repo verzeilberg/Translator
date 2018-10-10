@@ -9,24 +9,24 @@ $this->pageBreadcrumbs()->setItems([
 ]);
 ?>
 <div class="row">
-    <h1 class="col">Manage Translation indexes</h1>
+    <h1><?php echo $this->translator()->translate('translator.head.title'); ?></h1>
 </div>
 <div class="row">
     <div class="col">
         <a class="btn btn-dark" href="
            <?= $this->url('beheer/translators', ['action' => 'add']); ?>">
-            <i class="fas fa-plus"></i> New Translation index
+            <i class="fas fa-plus"></i> <?php echo $this->translator()->translate('translator.new.index'); ?>
         </a>
         <a class="btn btn-dark" href="
            <?= $this->url('beheer/translators', ['action' => 'generate-files']); ?>">
-            <i class="fas fa-file-code"></i> Generate languages files
+            <i class="fas fa-file-code"></i> <?php echo $this->translator()->translate('translator.generate.languages.files'); ?>
         </a>
     </div>
     <div class="col text-right">
         <form class="form-inline" name="searchLanguage" method="post" action="<?php echo $this->url('beheer/languages'); ?>">
             <div class="col text-right" style="padding-right:0;">
-                <input class="form-control" name="search" value="<?php echo $searchString; ?>" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-dark" type="submit">Search</button>
+                <input class="form-control" name="search" value="<?php echo $searchString; ?>" type="search" placeholder="<?php echo $this->translator()->translate('search.placeholder'); ?>" aria-label="Search">
+                <button class="btn btn-dark" type="submit"><?php echo $this->translator()->translate('search'); ?></button>
             </div>
         </form>
     </div>
@@ -36,8 +36,8 @@ $this->pageBreadcrumbs()->setItems([
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Index</th>
-                    <th>Date Created</th>
+                    <th><?php echo $this->translator()->translate('translator.table.index.title'); ?></th>
+                    <th><?php echo $this->translator()->translate('translator.table.creation.date.title'); ?></th>
                     <th class="text-center"><i class="fas fa-cogs"></i></th>
                 </tr>
             </thead>
@@ -65,7 +65,7 @@ $this->pageBreadcrumbs()->setItems([
             <?php endforeach; ?> 
             <?php } else { ?>
                 <tr>
-                    <td colspan="5" class="text-center">No translation indexes found!</td>
+                    <td colspan="5" class="text-center"><?php echo $this->translator()->translate('no.translation.indexes.found'); ?></td>
                 </tr>
             <?php } ?>
         </table>
