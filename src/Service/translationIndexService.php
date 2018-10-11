@@ -104,7 +104,7 @@ class translationIndexService implements translationIndexServiceInterface {
      * @return      void
      *
      */
-    public function saveTranslation($translationIndex, $user) {
+    public function saveTranslationIndex($translationIndex, $user) {
         $translationIndex->setDateCreated(new \DateTime());
         $translationIndex->setCreatedBy($user);
         $this->storeTranslationIndex($translationIndex);

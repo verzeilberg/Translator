@@ -57,6 +57,14 @@ class translatorService implements translatorServiceInterface {
         return $translation;
     }
 
+    /**
+     *
+     * Get translation object based on id
+     *
+     * @param       index id  $id The index id to fetch the translation from the database
+     * @return      array
+     *
+     */
     public function getTranslationsByIndexId($id) {
         $qb = $this->entityManager->getRepository(Translation::class)->createQueryBuilder('t');
         $qb->where('t.translationIndex = ' . $id);
@@ -68,6 +76,21 @@ class translatorService implements translatorServiceInterface {
             $translations[$item->getLanguage()->getId()]['translation'] = $item->getTranslation();
             $translations[$item->getLanguage()->getId()]['translationIndex'] = $item->getTranslationIndex()->getId();
         }
+        return $translations;
+    }
+
+    /**
+     *
+     * Get translation object based on language id
+     *
+     * @param       language id  $id The language id to fetch the translation from the database
+     * @return      array
+     *
+     */
+    public function getTranslationsByLanguageId($id) {
+        $translations = $this->entityManager->getRepository(Translation::class)
+                ->findBy(['language' => $id], []);
+
         return $translations;
     }
 
@@ -117,11 +140,8 @@ class translatorService implements translatorServiceInterface {
      * @return      void
      *
      */
-    public function generateLanguageFile($language) {
-        //Get translations
-        $translations = $language->getTranslations();
-        
-        var_Dump(count($translations));
+    public function generateLanguageFile($translations, $shortName) {
+
         //Set data for languages file
         $languageFileData = '';
         foreach ($translations AS $translation) {
@@ -138,7 +158,7 @@ class translatorService implements translatorServiceInterface {
         //Try to save data to file
         try {
             //Set data to file
-            file_put_contents(__DIR__ . '\..\..\locales\/' . strtolower($language->getShortName()) . '.php', $fileContent);
+            file_put_contents(__DIR__ . '\..\..\locales\/' . strtolower($shortName) . '.php', $fileContent);
             return true;
         } catch (Exception $e) {
             return false;
@@ -153,46 +173,34 @@ class translatorService implements translatorServiceInterface {
      *
      */
     public function defaultLanguages() {
-        
-        //First create default languages
-        $english = $this->languageService->newLanguage();
-        $english->setId(1);
-        $english->setName('English');
-        $english->setShortName('ENG');
-        $this->languageService->saveLanguage($english, NULL);
 
-        $dutch = $this->languageService->newLanguage();
-        $dutch->setId(2);
-        $dutch->setName('Dutch');
-        $dutch->setShortName('NED');
-        $this->languageService->saveLanguage($dutch, NULL);
-        
+        //Save default languages
+        $language = $this->languageService->newLanguage();
+        $language->setName('Dutch');
+        $language->setShortName('NED');
+        $this->languageService->saveLanguage($language, NULL);
+
+        $language = $this->languageService->getLanguageByShortName('NED');
+
+
+        //Save default indexes
         $defaultIndexes = $this->getDefaultIndexes();
-        
-        foreach($defaultIndexes AS $index) {
+        foreach ($defaultIndexes AS $index) {
             $translationIndex = $this->translationIndexService->newTranslationIndex();
             $translationIndex->setIndex($index);
-            $translationIndex = $this->translationIndexService->saveTranslation($translationIndex, NULL);
+            $translationIndex = $this->translationIndexService->saveTranslationIndex($translationIndex, NULL);
         }
-        
-        foreach($this->defaultTranslations() AS $languageIndex => $defaultTranslation) {
-            foreach($defaultTranslation AS $index => $translation) {
-               $translationIndex = $this->translationIndexService->getTranslationIndexByIndex($index);
-               $translationObject = $this->newTranslation();
-               $translationObject->setTranslation($translation);
-               $translationObject->setTranslationIndex($translationIndex);
-               if($languageIndex == 'Dutch') {
-                   $language = $dutch;
-               } else {
-                   $language = $english;
-               }
-               $translationObject->setLanguage($language);
-               $this->saveTranslation($translationObject, NULL);
-            }
+
+        foreach ($this->defaultTranslations() AS $index => $translation) {
+            $translationIndex = $this->translationIndexService->getTranslationIndexByIndex($index);
+            $translationObject = $this->newTranslation();
+            $translationObject->setTranslation($translation);
+            $translationObject->setTranslationIndex($translationIndex);
+            $translationObject->setLanguage($language);
+            $this->saveTranslation($translationObject, NULL);
         }
-        $this->generateLanguageFile($english);
-        $this->generateLanguageFile($dutch);
-        
+        $translations = $this->getTranslationsByLanguageId($language->getId());
+        $this->generateLanguageFile($translations, $language->getShortName());
     }
 
     private function getDefaultIndexes() {
@@ -225,7 +233,7 @@ class translatorService implements translatorServiceInterface {
      *
      */
     public function defaultTranslations() {
-        $dutchDefaultTranslations = [
+        $defaultTranslations = [
             'translator.head.title' => 'Vertalingen',
             'translator.new.index' => 'Nieuwe index',
             'translator.generate.languages.files' => 'Genereer vertalings bestanden',
@@ -242,31 +250,7 @@ class translatorService implements translatorServiceInterface {
             'save' => 'Opslaan',
             'cancel' => 'Annuleren',
         ];
-
-        $englishDefaultTranslations = [
-            'translator.head.title' => 'Translations',
-            'translator.new.index' => 'New index',
-            'translator.generate.languages.files' => 'Generate translation files',
-            'search.placeholder' => 'Search',
-            'no.translation.indexes.found' => 'No indexes found!',
-            'translator.table.index.title' => 'Name',
-            'translator.table.creation.date.title' => 'Creation date',
-            'translator.head.title.add.index' => 'Add new index',
-            'translator.head.title.edit.index' => 'Change index',
-            'translator.head.title.manage.translations.index' => 'Manage translation for indexes',
-            'translator.head.title.generate.files' => 'Generate translation files',
-            'button.generate' => 'Generate',
-            'no.translation.files.found' => 'No languaes files found!',
-            'save' => 'Save',
-            'cancel' => 'Cancel',
-        ];
-        
-        $defaultTranslations = [];
-        $defaultTranslations['English'] = $englishDefaultTranslations;
-        $defaultTranslations['Dutch'] = $dutchDefaultTranslations;    
-        
         return $defaultTranslations;
-        
     }
 
     /**

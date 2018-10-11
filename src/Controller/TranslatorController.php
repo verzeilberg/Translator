@@ -48,7 +48,7 @@ class TranslatorController extends AbstractActionController {
 
             if ($form->isValid()) {
                 //Save Customer
-                $this->translationIndexService->saveTranslation($translationIndex, $this->currentUser());
+                $this->translationIndexService->saveTranslationIndex($translationIndex, $this->currentUser());
 
                 return $this->redirect()->toRoute('beheer/translators');
             }
@@ -151,7 +151,7 @@ class TranslatorController extends AbstractActionController {
         if (empty($language)) {
             return $this->redirect()->toRoute('beheer/translators');
         }
-        $result = $this->translatorService->generateLanguageFile($language);
+        $result = $this->translatorService->generateLanguageFile($language->getTranslations(), $language->getShortName());
         if($result){
             $language->setGeneratedFileDate(new \DateTime());
             $this->languageService->storeLanguage($language);

@@ -9,6 +9,8 @@ use UploadFiles\Service\uploadfilesService;
 use Translator\Service\languageService;
 use UploadImages\Service\cropImageService;
 use UploadImages\Service\imageService;
+use Translator\Service\translatorService;
+use Translator\Service\translationIndexService;
 
 /**
  * This is the factory for AuthController. Its purpose is to instantiate the controller
@@ -25,7 +27,9 @@ class LanguageControllerFactory implements FactoryInterface {
         $uploadfilesService = new uploadfilesService($config, $entityManager);
         $cropImageService = new cropImageService($entityManager, $config);
         $imageService = new imageService($entityManager, $config);
-        return new LanguageController($vhm, $entityManager, $ls, $uploadfilesService, $cropImageService, $imageService);
+        $translationIndexService = new translationIndexService($entityManager);
+        $translatorService = new translatorService($entityManager, $ls, $translationIndexService);
+        return new LanguageController($vhm, $entityManager, $ls, $uploadfilesService, $cropImageService, $imageService, $translatorService);
     }
 
 }

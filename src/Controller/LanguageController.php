@@ -14,19 +14,28 @@ class LanguageController extends AbstractActionController {
     protected $ufs;
     protected $cropImageService;
     protected $imageService;
+    protected $translatorService;
 
-    public function __construct($vhm, $em, $ls, $ufs, $cropImageService, $imageService) {
+    public function __construct($vhm, $em, $ls, $ufs, $cropImageService, $imageService, $translatorService) {
         $this->vhm = $vhm;
         $this->em = $em;
         $this->ls = $ls;
         $this->ufs = $ufs;
         $this->cropImageService = $cropImageService;
         $this->imageService = $imageService;
+        $this->translatorService = $translatorService;
     }
 
     public function indexAction() {
         
         $languages = $this->ls->getLanguages();
+        
+        if(count($languages) == 0){
+            $this->translatorService->defaultLanguages();
+            $languages = $this->ls->getLanguages();
+        
+        }
+        
         $searchString = '';
         if ($this->getRequest()->isPost()) {
             $searchString = $this->getRequest()->getPost('search');
