@@ -1,0 +1,73 @@
+<?php
+$this->headTitle('Translators');
+
+$this->mainMenu()->setActiveItemId('translators');
+
+$this->pageBreadcrumbs()->setItems([
+    $this->translator()->translate('home.text') => $this->url('home'),
+    $this->translator()->translate('manage.translations') => $this->url('beheer/translations'),
+]);
+?>
+<div class="row">
+    <h1><?php echo $this->translator()->translate('translator.head.title'); ?></h1>
+</div>
+<div class="row">
+    <div class="col">
+        <a class="btn btn-dark" href="
+           <?= $this->url('beheer/translations', ['action' => 'add']); ?>">
+            <i class="fas fa-plus"></i> <?php echo $this->translator()->translate('translator.new.index'); ?>
+        </a>
+        <a class="btn btn-dark" href="
+           <?= $this->url('beheer/translators', ['action' => 'index']); ?>">
+            <i class="fas fa-file-code"></i> <?php echo $this->translator()->translate('translator.generate.languages.files'); ?>
+        </a>
+    </div>
+    <div class="col text-right">
+        <form class="form-inline" name="searchLanguage" method="post" action="<?php echo $this->url('beheer/translations'); ?>">
+            <div class="col text-right" style="padding-right:0;">
+                <input class="form-control" name="search" value="<?php echo $searchString; ?>" type="search" placeholder="<?php echo $this->translator()->translate('search.placeholder'); ?>" aria-label="Search">
+                <button class="btn btn-dark" type="submit"><?php echo $this->translator()->translate('search'); ?></button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th><?php echo $this->translator()->translate('translator.table.index.title'); ?></th>
+                    <th><?php echo $this->translator()->translate('translator.table.creation.date.title'); ?></th>
+                    <th class="text-center"><i class="fas fa-cogs"></i></th>
+                </tr>
+            </thead>
+            <?php if(count($translationIndexes) > 0) { ?>
+            <?php foreach ($translationIndexes as $translationIndex): ?>
+                <tr>
+                    <td>
+                        <?= $this->escapeHtml($translationIndex->getIndex()); ?></a> 
+                    </td>
+                    <td>
+                        <?= (is_object($translationIndex->getDateCreated()) ? $this->escapeHtml($translationIndex->getDateCreated()->format('Y-m-d')) : ''); ?>
+                    </td> 
+                    <td class="text-center">
+                        <a class="btn btn-sm btn-warning" href="<?= $this->url('beheer/translations', ['action' => 'translation', 'id' => $translationIndex->getId()]); ?>">
+                            <i class="far fa-calendar-plus"></i>
+                        </a>
+                        <a class="btn btn-sm btn-dark" href="<?= $this->url('beheer/translations', ['action' => 'edit', 'id' => $translationIndex->getId()]); ?>">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-sm btn-danger" href="<?= $this->url('beheer/translations', ['action' => 'delete', 'id' => $translationIndex->getId()]); ?>">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>    
+                </tr>
+            <?php endforeach; ?> 
+            <?php } else { ?>
+                <tr>
+                    <td colspan="5" class="text-center"><?php echo $this->translator()->translate('no.translation.indexes.found'); ?></td>
+                </tr>
+            <?php } ?>
+        </table>
+    </div>
+</div>

@@ -52,7 +52,7 @@ class translationIndexService implements translationIndexServiceInterface {
 
         return $translationIndex;
     }
-    
+
     /**
      *
      * Get translationIndex object based on index
@@ -66,6 +66,24 @@ class translationIndexService implements translationIndexServiceInterface {
                 ->findOneBy(['index' => $index], []);
 
         return $translationIndex;
+    }
+
+    /**
+     *
+     * Get array of translation indexes
+     * @var $searchString string to search for
+     *
+     * @return      array
+     *
+     */
+    public function searchTranslationIndexes($searchString) {
+        $qb = $this->entityManager->getRepository(TranslationIndex::class)->createQueryBuilder('t');
+        $orX = $qb->expr()->orX();
+        $orX->add($qb->expr()->like('t.index', $qb->expr()->literal("%$searchString%")));
+        $qb->where($orX);
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+        return $result;
     }
 
     /**

@@ -6,10 +6,11 @@ interface translatorServiceInterface {
 
     /**
      *
-     * Get array of translations
+     * Generate language file
      *
-     * @return      array
+     * @param       language $language object
+     * @return      void
      *
      */
-    public function getTranslations();
+    public function generateLanguageFile($translations, $shortName);
 }

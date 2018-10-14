@@ -16,5 +16,13 @@ return [
 'no.translation.files.found'  => 'Geen talen voor bestanden gevonden!',
 'save'  => 'Opslaan',
 'cancel'  => 'Annuleren',
+'language.file.generated'  => 'vertaal bestand gegenereerd',
+'language.file.not.generated'  => 'vertaal bestand niet gegenereerd',
+'language.not.found'  => 'Taal niet gevonden',
+'id.not.found'  => 'ID niet gevonden',
+'home.text'  => 'home',
+'manage.translations'  => 'Beheer vertalingen',
+'translations.added'  => 'Vertaling(en) toegevoegd',
+'translations.added.error'  => 'Iets ging verkeerd. Probeer het opnieuw',
 ],
 ];

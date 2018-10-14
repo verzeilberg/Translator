@@ -17,10 +17,6 @@ class Translate extends AbstractHelper {
     }
 
     public function translate($translation) {
-
-        
-        
-        
         if (is_array($this->translations['translations']) && array_key_exists($translation, $this->translations['translations'])) {
             $result = $this->translations['translations'][$translation];
         } else {

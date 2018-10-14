@@ -12,15 +12,18 @@ return [
         'factories' => [
             Controller\TranslatorController::class => Factory\TranslatorControllerFactory::class,
             Controller\LanguageController::class => Factory\LanguageControllerFactory::class,
+            Controller\TranslationController::class => Factory\TranslationControllerFactory::class,
         ],
         'aliases' => [
             'translatorbeheer' => Controller\TranslatorController::class,
             'languagebeheer' => Controller\LanguageController::class,
+            'translationbeheer' => Controller\TranslationController::class,
         ],
     ],
     'service_manager' => [
         'invokables' => [
             'Translator\Service\translatorServiceInterface' => 'Translator\Service\translatorService',
+            'Translator\Service\translationServiceInterface' => 'Translator\Service\translationService',
             'Translator\Service\languageServiceInterface' => 'Translator\Service\languageService',
             'Translator\Service\translationIndexServiceInterface' => 'Translator\Service\translationIndexService'
         ],
@@ -50,8 +53,21 @@ return [
                     ],
                 ],
             ],
-        ],
-        'language' => [
+            'translation' => [
+                'type' => 'segment',
+                'options' => [
+                    'route' => '/translation[/:action][/:id]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => 'translationbeheer',
+                        'action' => 'index',
+                    ],
+                ],
+            ],
+            'language' => [
                 'type' => 'segment',
                 'options' => [
                     'route' => '/language[/:action][/:id]',
@@ -65,6 +81,7 @@ return [
                     ],
                 ],
             ],
+        ],
     ],
     'view_manager' => [
         'template_path_stack' => [
@@ -79,6 +96,10 @@ return [
                 // to anyone.
                 ['actions' => '*', 'allow' => '+translator.manage']
             ],
+            'translationbeheer' => [
+                // to anyone.
+                ['actions' => '*', 'allow' => '+translation.manage']
+            ],
             'languagebeheer' => [
                 // to anyone.
                 ['actions' => '*', 'allow' => '+language.manage']
@@ -87,6 +108,66 @@ return [
     ],
     'translatorSettings' => [
         'defaultLanguage' => 'ned',
+        'defaultIndexes' => [
+            'translator.head.title',
+            'translator.new.index',
+            'translator.generate.languages.files',
+            'search.placeholder',
+            'no.translation.indexes.found',
+            'translator.table.index.title',
+            'translator.table.creation.date.title',
+            'translator.head.title.add.index',
+            'translator.head.title.edit.index',
+            'manage.translations',
+            'translator.head.title.manage.translations.index',
+            'translator.head.title.generate.files',
+            'button.generate',
+            'no.translation.files.found',
+            'language.file.generated',
+            'language.file.not.generated',
+            'language.not.found',
+            'translation.index.added',
+            'translation.index.changed',
+            'translation.index.removed',
+            'translation.index.not.found',
+            'translations.added',
+            'translations.added.error',
+            'id.not.found',
+            'home.text',
+            'save',
+            'cancel'
+        ],
+        'defaultTranslations' => [
+            'ned' => [
+                'translator.head.title' => 'Vertalingen',
+                'translator.new.index' => 'Nieuwe index',
+                'translator.generate.languages.files' => 'Genereer vertalings bestanden',
+                'search.placeholder' => 'Zoeken',
+                'no.translation.indexes.found' => 'Geen indexes gevonden!',
+                'translator.table.index.title' => 'Naam',
+                'translator.table.creation.date.title' => 'Aanmaak datum',
+                'translator.head.title.add.index' => 'Voeg nieuwe index toe',
+                'translator.head.title.edit.index' => 'Wijzig index',
+                'manage.translations' => 'Beheer vertalingen',
+                'translator.head.title.manage.translations.index' => 'Beheer vertalingen voor indexes',
+                'translator.head.title.generate.files' => 'Genereer vertalings bestanden',
+                'button.generate' => 'Genereer',
+                'no.translation.files.found' => 'Geen talen voor bestanden gevonden!',
+                'language.file.generated' => 'vertaal bestand gegenereert',
+                'language.file.not.generated' => 'vertaal bestand niet gegenereerd',
+                'language.not.found' => 'Taal niet gevonden',
+                'translation.index.added' => 'Vertalings index toegevoegd',
+                'translation.index.changed' => 'Vertalings index gewijzigd',
+                'translation.index.removed' => 'Vertalings index verwijderd',
+                'translation.index.not.found' => 'Vertalings index niet gevonden',
+                'translations.added' => 'Vertaling(en) toegevoegd',
+                'translations.added.error' => 'Iets ging verkeerd. Probeer het opnieuw',
+                'id.not.found' => 'id niet gevonden',
+                'home.text' => 'home',
+                'save' => 'Opslaan',
+                'cancel' => 'Annuleren',
+            ],
+        ],
     ],
     'doctrine' => [
         'driver' => [

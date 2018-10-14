@@ -3,9 +3,6 @@
 namespace Translator\Service;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Mail;
-use Zend\Mime\Part as MimePart;
-use Zend\Mime\Message as MimeMessage;
 
 /*
  * Entities
@@ -17,119 +14,16 @@ class translatorService implements translatorServiceInterface {
     protected $entityManager;
     protected $languageService;
     protected $translationIndexService;
+    protected $config;
 
     /**
      * Constructor.
      */
-    public function __construct($entityManager, $languageService, $translationIndexService) {
+    public function __construct($entityManager, $languageService, $translationIndexService, $config) {
         $this->entityManager = $entityManager;
         $this->languageService = $languageService;
         $this->translationIndexService = $translationIndexService;
-    }
-
-    /**
-     *
-     * Get array of translations
-     *
-     * @return      array
-     *
-     */
-    public function getTranslations() {
-
-        $translators = $this->entityManager->getRepository(Translation::class)
-                ->findBy([], ['dateCreated' => 'DESC']);
-
-        return $translators;
-    }
-
-    /**
-     *
-     * Get translation object based on id
-     *
-     * @param       id  $id The id to fetch the translation from the database
-     * @return      object
-     *
-     */
-    public function getTranslation($id) {
-        $translation = $this->entityManager->getRepository(Translation::class)
-                ->findOneBy(['id' => $id], []);
-
-        return $translation;
-    }
-
-    /**
-     *
-     * Get translation object based on id
-     *
-     * @param       index id  $id The index id to fetch the translation from the database
-     * @return      array
-     *
-     */
-    public function getTranslationsByIndexId($id) {
-        $qb = $this->entityManager->getRepository(Translation::class)->createQueryBuilder('t');
-        $qb->where('t.translationIndex = ' . $id);
-        $query = $qb->getQuery();
-        $result = $query->getResult();
-        $translations = [];
-        foreach ($result AS $item) {
-            $translations[$item->getLanguage()->getId()]['id'] = $item->getId();
-            $translations[$item->getLanguage()->getId()]['translation'] = $item->getTranslation();
-            $translations[$item->getLanguage()->getId()]['translationIndex'] = $item->getTranslationIndex()->getId();
-        }
-        return $translations;
-    }
-
-    /**
-     *
-     * Get translation object based on language id
-     *
-     * @param       language id  $id The language id to fetch the translation from the database
-     * @return      array
-     *
-     */
-    public function getTranslationsByLanguageId($id) {
-        $translations = $this->entityManager->getRepository(Translation::class)
-                ->findBy(['language' => $id], []);
-
-        return $translations;
-    }
-
-    /**
-     *
-     * Create translations objects and save to database
-     *
-     * @param       translations  $translations array of translations
-     * @param       translationIndex $translationIndex translation index the translation must be linked to
-     * @return      void
-     *
-     */
-    public function saveTranslations($translations, $translationIndex, $user) {
-        if (count($translations) > 0) {
-            $languages = $this->languageService->getLanguages();
-
-            foreach ($languages AS $language) {
-                if (array_key_exists('languages_' . $language->getId(), $translations)) {
-
-                    if (array_key_exists('translation_' . $language->getId(), $translations)) {
-                        $translationId = $translations['translation_' . $language->getId()];
-                        $translation = $this->getTranslation($translationId);
-                        $value = $translations['languages_' . $language->getId()];
-                        $translation->setTranslation($value);
-                        $this->updateTranslation($translation, $user);
-                    } else {
-                        $translation = $this->newTranslation();
-                        $value = $translations['languages_' . $language->getId()];
-                        $translation->setTranslation($value);
-                        $translation->setTranslationIndex($translationIndex);
-                        $translation->setLanguage($language);
-                        $this->saveTranslation($translation, $user);
-                    }
-                }
-            }
-            return true;
-        } else {
-            return false;
-        }
+        $this->config = $config;
     }
 
     /**
@@ -184,14 +78,15 @@ class translatorService implements translatorServiceInterface {
 
 
         //Save default indexes
-        $defaultIndexes = $this->getDefaultIndexes();
+        $defaultIndexes = $this->config['translatorSettings']['defaultIndexes'];
         foreach ($defaultIndexes AS $index) {
             $translationIndex = $this->translationIndexService->newTranslationIndex();
             $translationIndex->setIndex($index);
             $translationIndex = $this->translationIndexService->saveTranslationIndex($translationIndex, NULL);
         }
 
-        foreach ($this->defaultTranslations() AS $index => $translation) {
+        $defaultTranslations = $this->config['translatorSettings']['defaultTranslations']['ned'];
+        foreach ($defaultTranslations AS $index => $translation) {
             $translationIndex = $this->translationIndexService->getTranslationIndexByIndex($index);
             $translationObject = $this->newTranslation();
             $translationObject->setTranslation($translation);
@@ -201,136 +96,6 @@ class translatorService implements translatorServiceInterface {
         }
         $translations = $this->getTranslationsByLanguageId($language->getId());
         $this->generateLanguageFile($translations, $language->getShortName());
-    }
-
-    private function getDefaultIndexes() {
-        $defaultIndexes = [
-            'translator.head.title',
-            'translator.new.index',
-            'translator.generate.languages.files',
-            'search.placeholder',
-            'no.translation.indexes.found',
-            'translator.table.index.title',
-            'translator.table.creation.date.title',
-            'translator.head.title.add.index',
-            'translator.head.title.edit.index',
-            'translator.head.title.manage.translations.index',
-            'translator.head.title.generate.files',
-            'button.generate',
-            'no.translation.files.found',
-            'save',
-            'cancel'
-        ];
-
-        return $defaultIndexes;
-    }
-
-    /**
-     *
-     * Set default translations
-     *
-     * @return      void
-     *
-     */
-    public function defaultTranslations() {
-        $defaultTranslations = [
-            'translator.head.title' => 'Vertalingen',
-            'translator.new.index' => 'Nieuwe index',
-            'translator.generate.languages.files' => 'Genereer vertalings bestanden',
-            'search.placeholder' => 'Zoeken',
-            'no.translation.indexes.found' => 'Geen indexes gevonden!',
-            'translator.table.index.title' => 'Naam',
-            'translator.table.creation.date.title' => 'Aanmaak datum',
-            'translator.head.title.add.index' => 'Voeg nieuwe index toe',
-            'translator.head.title.edit.index' => 'Wijzig index',
-            'translator.head.title.manage.translations.index' => 'Beheer vertalingen voor indexes',
-            'translator.head.title.generate.files' => 'Genereer vertalings bestanden',
-            'button.generate' => 'Genereer',
-            'no.translation.files.found' => 'Geen talen voor bestanden gevonden!',
-            'save' => 'Opslaan',
-            'cancel' => 'Annuleren',
-        ];
-        return $defaultTranslations;
-    }
-
-    /**
-     *
-     * Create form of an object
-     *
-     * @param       translation $translation object
-     * @return      form
-     *
-     */
-    public function createForm($translation) {
-        $builder = new AnnotationBuilder($this->entityManager);
-        $form = $builder->createForm($translation);
-        $form->setHydrator(new DoctrineHydrator($this->entityManager, 'Translator\Entities\Translator'));
-        $form->bind($translation);
-
-        return $form;
-    }
-
-    /**
-     *
-     * Create a new translation object
-     * @return      object
-     *
-     */
-    public function newTranslation() {
-        $translation = new Translation();
-        return $translation;
-    }
-
-    /**
-     *
-     * Save a translation to database
-     * @param       translation $translation object
-     * @param       user $user object
-     * @return      void
-     *
-     */
-    public function saveTranslation($translation, $user) {
-        $translation->setDateCreated(new \DateTime());
-        $translation->setCreatedBy($user);
-        $this->storeTranslation($translation);
-    }
-
-    /**
-     *
-     * Update a translation to database
-     * @param       translation $translation object
-     * @param       user $user object
-     * @return      void
-     *
-     */
-    public function updateTranslation($translation, $user) {
-        $translation->setDateChanged(new \DateTime());
-        $translation->setChangedBy($user);
-        $this->storeTranslation($translation);
-    }
-
-    /**
-     *
-     * Save a translation to database
-     * @param       contact $translation object
-     * @return      void
-     *
-     */
-    public function storeTranslation($translation) {
-        $this->entityManager->persist($translation);
-        $this->entityManager->flush();
-    }
-
-    /**
-     *
-     * Delete a translation object from database
-     * @param       translation $translation object
-     * @return      void
-     *
-     */
-    public function deleteTranslation($translation) {
-        $this->entityManager->remove($translation);
-        $this->entityManager->flush();
     }
 
 }

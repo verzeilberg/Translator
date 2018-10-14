@@ -28,7 +28,7 @@ class LanguageControllerFactory implements FactoryInterface {
         $cropImageService = new cropImageService($entityManager, $config);
         $imageService = new imageService($entityManager, $config);
         $translationIndexService = new translationIndexService($entityManager);
-        $translatorService = new translatorService($entityManager, $ls, $translationIndexService);
+        $translatorService = new translatorService($entityManager, $ls, $translationIndexService, $config);
         return new LanguageController($vhm, $entityManager, $ls, $uploadfilesService, $cropImageService, $imageService, $translatorService);
     }
 

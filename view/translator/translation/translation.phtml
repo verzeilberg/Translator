@@ -12,7 +12,7 @@ $this->pageBreadcrumbs()->setItems([
 <h1><?php echo $this->translator()->translate('translator.head.title.manage.translations.index'); ?></h1>
 <h2 class="text-warning"><?php echo $translationIndex->getIndex(); ?></h2>
 <hr />
-    <form name="add-translations" action="<?php echo $this->url('beheer/translators', ['action' => 'translations', 'id' => $translationIndex->getId()]); ?>" method="post">
+    <form name="add-translations" action="<?php echo $this->url('beheer/translations', ['action' => 'translation', 'id' => $translationIndex->getId()]); ?>" method="post">
         <?php foreach ($languages AS $index => $language) { ?>
             <?php $translationIndex = $language->getId() - 1; 
             
@@ -42,7 +42,7 @@ $this->pageBreadcrumbs()->setItems([
         <div class="form-group row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <button type="submit" id="submit" class="btn btn-dark"><?php echo $this->translator()->translate('save'); ?></button> 
-                <a href="<?php echo $this->url('beheer/translators') ?>" class="btn btn-danger" title="<?php echo $this->translator()->translate('cancel'); ?>"><?php echo $this->translator()->translate('cancel'); ?></a>
+                <a href="<?php echo $this->url('beheer/translations') ?>" class="btn btn-danger" title="<?php echo $this->translator()->translate('cancel'); ?>"><?php echo $this->translator()->translate('cancel'); ?></a>
             </div>  
         </div>
     </form>

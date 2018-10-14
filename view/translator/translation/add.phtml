@@ -6,7 +6,7 @@ $this->mainMenu()->setActiveItemId('translations');
 $this->pageBreadcrumbs()->setItems([
     'Home' => $this->url('home'),
     'Manage Translations' => $this->url('beheer/translators'),
-    'Add Language' => $this->url('beheer/translators', ['action' => 'add'])
+    'Add Language' => $this->url('beheer/translations', ['action' => 'add'])
 ]);
 $form->setAttributes(array(
     'class' => 'form-horizontal',
@@ -17,12 +17,12 @@ $form->setAttributes(array(
 <?php echo $this->form()->openTag($form); ?>
 <?php
 //Language form
-echo $this->partial('translator/translator/partials/form.phtml', array('form' => $form));
+echo $this->partial('translator/translation/partials/form.phtml', array('form' => $form));
 ?>
 <div class="form-group row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <button type="submit" id="submit" class="btn btn-success"><?php echo $this->translator()->translate('save'); ?></button> 
-        <a href="<?php echo $this->url['beheer\translators']; ?>" class="btn btn-danger" title="<?php echo $this->translator()->translate('cancel'); ?>"><?php echo $this->translator()->translate('cancel'); ?></a>
+        <a href="<?php echo $this->url('beheer/translations', ['action' => 'index']) ?>" class="btn btn-danger" title="<?php echo $this->translator()->translate('cancel'); ?>"><?php echo $this->translator()->translate('cancel'); ?></a>
     </div>  
 </div>
 <?php echo $this->form()->closeTag($form); ?>
