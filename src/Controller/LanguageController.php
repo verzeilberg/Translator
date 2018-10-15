@@ -27,19 +27,20 @@ class LanguageController extends AbstractActionController {
     }
 
     public function indexAction() {
-        
-        $languages = $this->ls->getLanguages();
-        
+        $page = $this->params()->fromQuery('page', 1);
+        $query = $this->ls->getLanguages();
+        $languages = $this->ls->getLanguagesForPagination($query, $page, 10);
         if(count($languages) == 0){
             $this->translatorService->defaultLanguages();
             $languages = $this->ls->getLanguages();
-        
+            
         }
         
         $searchString = '';
         if ($this->getRequest()->isPost()) {
             $searchString = $this->getRequest()->getPost('search');
-            $languages = $this->ls->searchLanguages($searchString);
+            $query = $this->ls->searchLanguages($searchString);
+            $languages = $this->ls->getLanguagesForPagination($query, $page, 10);
         }
 
         return new ViewModel(

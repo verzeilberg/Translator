@@ -77,3 +77,7 @@ $this->pageBreadcrumbs()->setItems([
         </table>
     </div>
 </div>
+<?= $this->paginationControl($languages,
+            'Sliding',
+            'translator/partials/paginator', 
+            ['route' => 'beheer/translations']); ?>

@@ -21,7 +21,9 @@ class TranslatorController extends AbstractActionController {
 
     public function indexAction() {
          //Get languages
-        $languages = $this->languageService->getLanguages();
+        $page = $this->params()->fromQuery('page', 1);
+        $query = $this->languageService->getLanguages();
+        $languages = $this->languageService->getLanguagesForPagination($query, $page, 10);
 
         return new ViewModel(
                 array(

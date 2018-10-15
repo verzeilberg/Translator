@@ -22,11 +22,14 @@ class TranslationController extends AbstractActionController {
     }
 
     public function indexAction() {
-        $translationIndexes = $this->translationIndexService->getTranslationIndexes();
+        $page = $this->params()->fromQuery('page', 1);
+        $query = $this->translationIndexService->getTranslationIndexes();
+        $translationIndexes = $this->translationIndexService->getTranslationIndexesForPagination($query, $page, 10);
         $searchString = '';
         if ($this->getRequest()->isPost()) {
             $searchString = $this->getRequest()->getPost('search');
-            $translationIndexes = $this->translationIndexService->searchTranslationIndexes($searchString);
+            $query = $this->translationIndexService->searchTranslationIndexes($searchString);
+            $translationIndexes = $this->translationIndexService->getTranslationIndexesForPagination($query, $page, 10);
         }
 
         return new ViewModel(

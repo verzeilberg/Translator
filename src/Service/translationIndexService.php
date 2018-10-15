@@ -5,7 +5,9 @@ namespace Translator\Service;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
-
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use Zend\Paginator\Paginator;
 
 /*
  * Entities
@@ -31,11 +33,11 @@ class translationIndexService implements translationIndexServiceInterface {
      *
      */
     public function getTranslationIndexes() {
+        $qb = $this->entityManager->getRepository(TranslationIndex::class)->createQueryBuilder('t');
+        $qb->orderBy('t.dateCreated', 'DESC');
+        $query = $qb->getQuery();
 
-        $translators = $this->entityManager->getRepository(TranslationIndex::class)
-                ->findBy([], ['dateCreated' => 'DESC']);
-
-        return $translators;
+        return $query;
     }
 
     /**
@@ -82,8 +84,26 @@ class translationIndexService implements translationIndexServiceInterface {
         $orX->add($qb->expr()->like('t.index', $qb->expr()->literal("%$searchString%")));
         $qb->where($orX);
         $query = $qb->getQuery();
-        $result = $query->getResult();
-        return $result;
+        //$result = $query->getResult();
+        return $query;
+    }
+
+    /**
+     *
+     * Get array of translation indexes for pagination
+     * @var $query query 
+     * @var $currentPage current page 
+     * @var $itemsPerPage items on a page 
+     *
+     * @return      array
+     *
+     */
+    public function getTranslationIndexesForPagination($query, $currentPage = 1, $itemsPerPage = 10) {
+        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
+        $paginator = new Paginator($adapter);
+        $paginator->setDefaultItemCountPerPage($itemsPerPage);
+        $paginator->setCurrentPageNumber($currentPage);
+        return $paginator;
     }
 
     /**

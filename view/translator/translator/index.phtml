@@ -35,12 +35,12 @@ $this->pageBreadcrumbs()->setItems([
                             ?>
                         </td>
                         <td class="text-center">
-                            <?php echo (is_object($language->getGeneratedFileDate())? $language->getGeneratedFileDate()->format('d-m-Y H:i:s'):''); ?>
+                            <?php echo (is_object($language->getGeneratedFileDate()) ? $language->getGeneratedFileDate()->format('d-m-Y H:i:s') : ''); ?>
                         </td>
                         <td class="text-center">
                             <a class="btn btn-sm btn-dark" href="<?= $this->url('beheer/translators', ['action' => 'generate-file', 'id' => $language->getId()]); ?>">
-                            <i class="fas fa-cog"></i> <?php echo $this->translator()->translate('button.generate'); ?>
-                        </a>
+                                <i class="fas fa-cog"></i> <?php echo $this->translator()->translate('button.generate'); ?>
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?> 
@@ -52,4 +52,6 @@ $this->pageBreadcrumbs()->setItems([
         </table>
     </div>
 </div>
-
+<?=
+$this->paginationControl($languages, 'Sliding', 'translator/partials/paginator', ['route' => 'beheer/translations']);
+?>

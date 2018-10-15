@@ -9,7 +9,7 @@ $this->pageBreadcrumbs()->setItems([
 ]);
 ?>
 <div class="row">
-    <h1><?php echo $this->translator()->translate('translator.head.title'); ?></h1>
+    <h1 class="col"><?php echo $this->translator()->translate('translator.head.title'); ?></h1>
 </div>
 <div class="row">
     <div class="col">
@@ -71,3 +71,7 @@ $this->pageBreadcrumbs()->setItems([
         </table>
     </div>
 </div>
+<?= $this->paginationControl($translationIndexes,
+            'Sliding',
+            'translator/partials/paginator', 
+            ['route' => 'beheer/translations']); ?>

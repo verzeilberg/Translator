@@ -1,0 +1,39 @@
+<?php if ($this->pageCount > 2): ?>
+<div class="row">
+    <nav class="col" aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+
+            <!-- Previous page link -->
+            <?php if (isset($this->previous)): ?>
+                <li class="page-item">
+                    <a class="page-link bg-dark text-white" href="<?= $this->url($this->route, [], ['query' => ['page' => $this->previous]]); ?>" aria-label="Previous">
+                        <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+                    </a>
+                </li>  
+            <?php endif; ?>
+
+            <!-- Numbered page links -->
+            <?php foreach ($this->pagesInRange as $page): ?>
+                <?php if ($page != $this->current): ?>
+                    <li class="page-item">
+                        <a class="page-link bg-dark text-white" href="<?= $this->url($this->route, [], ['query' => ['page' => $page]]); ?>"><?= $this->escapeHtml($page); ?></a>
+                    </li>    
+                <?php else: ?>
+                    <li class="page-item disabled">
+                        <span class="page-link bg-dark text-warning" aria-hidden="true"><b><?= $this->escapeHtml($page); ?></b></span> 
+                    </li>    
+                <?php endif; ?>
+            <?php endforeach; ?>
+
+            <!-- Next page link -->
+            <?php if (isset($this->next)): ?>
+                <li class="page-item">
+                    <a class="page-link bg-dark text-white" href="<?php echo $this->url($this->route, [], ['query' => ['page' => $this->next]]); ?>" aria-label="Next">
+                        <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
+                    </a>
+                </li>  
+            <?php endif; ?>
+        </ul>
+    </nav>
+</div>
+<?php endif; ?>

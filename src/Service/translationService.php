@@ -90,7 +90,7 @@ class translationService implements translationServiceInterface {
 
         return $translations;
     }
-
+    
     /**
      *
      * Create translations objects and save to database
