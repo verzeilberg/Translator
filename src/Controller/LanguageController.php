@@ -30,12 +30,11 @@ class LanguageController extends AbstractActionController {
         $page = $this->params()->fromQuery('page', 1);
         $query = $this->ls->getLanguages();
         $languages = $this->ls->getLanguagesForPagination($query, $page, 10);
-        if(count($languages) == 0){
+        if (count($languages) == 0) {
             $this->translatorService->defaultLanguages();
             $languages = $this->ls->getLanguages();
-            
         }
-        
+
         $searchString = '';
         if ($this->getRequest()->isPost()) {
             $searchString = $this->getRequest()->getPost('search');
@@ -231,6 +230,27 @@ class LanguageController extends AbstractActionController {
         $this->ls->deleteLanguage($language);
         $this->flashMessenger()->addSuccessMessage('Language removed');
         return $this->redirect()->toRoute('beheer/languages');
+    }
+
+    public function languageSelectAction() {
+        if ($this->getRequest()->isPost()) {
+            $id = $this->getRequest()->getPost('selectLanguage');
+            $returnURL = $this->getRequest()->getPost('redirectURL');
+            if(empty($returnURL)) {
+                $returnURL = '/';
+            }
+            if (empty($id)) {
+                return $this->redirect()->toUrl($returnURL);
+            }
+            $language = $this->ls->getLanguage($id);
+            if (empty($language)) {
+                return $this->redirect()->toUrl($returnURL);
+            }
+            $this->translatorService->setLanguageInSession($language);
+            
+            return $this->redirect()->toUrl($returnURL);
+        }
+        
     }
 
 }

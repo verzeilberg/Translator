@@ -1,0 +1,27 @@
+<?php
+return [
+"translations" =>  [
+'translations.added.error'  => 'Something went wrong. Please try again',
+'translator.table.index.title'  => 'Name',
+'translations.added'  => 'Translation(s) added',
+'save'  => 'Save',
+'cancel'  => 'Cancel',
+'manage.translations'  => 'Manage translations',
+'home.text'  => 'home',
+'id.not.found'  => 'ID not found',
+'language.not.found'  => 'Language not found',
+'language.file.not.generated'  => 'language file not generated',
+'language.file.generated'  => 'language file generated',
+'translator.new.index'  => 'New index',
+'no.translation.indexes.found'  => 'No indexes found!',
+'translator.generate.languages.files'  => 'Generate languages files',
+'search.placeholder'  => 'Search',
+'translator.table.creation.date.title'  => 'Creation date',
+'translator.head.title.add.index'  => 'Add new index',
+'translator.head.title.edit.index'  => 'Edit index',
+'translator.head.title.generate.files'  => 'Generate languages files',
+'button.generate'  => 'Generate',
+'no.translation.files.found'  => 'No languages found for translation files!',
+'translator.head.title'  => 'Translations',
+],
+];

@@ -131,7 +131,8 @@ class TranslationController extends AbstractActionController {
         //Get translations for translationIndex
         $translations = $this->translationService->getTranslationsByIndexId($translationIndex->getId());
         //Get languages
-        $languages = $this->languageService->getLanguages();
+        $query = $this->languageService->getLanguages();
+        $languages = $query->getResult();
         return new ViewModel(
                 array(
             'translationIndex' => $translationIndex,

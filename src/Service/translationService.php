@@ -103,10 +103,8 @@ class translationService implements translationServiceInterface {
     public function saveTranslations($translations, $translationIndex, $user) {
         if (count($translations) > 0) {
             $languages = $this->languageService->getLanguages();
-
-            foreach ($languages AS $language) {
+            foreach ($languages->getResult() AS $language) {
                 if (array_key_exists('languages_' . $language->getId(), $translations)) {
-
                     if (array_key_exists('translation_' . $language->getId(), $translations)) {
                         $translationId = $translations['translation_' . $language->getId()];
                         $translation = $this->getTranslation($translationId);

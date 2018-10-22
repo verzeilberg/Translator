@@ -31,9 +31,11 @@ return [
     'view_helpers' => [
         'factories' => [
             View\Helper\Translate::class => View\Helper\Factory\TranslateFactory::class,
+            View\Helper\LanguageSelect::class => View\Helper\Factory\LanguageSelectFactory::class,
         ],
         'aliases' => [
             'translator' => View\Helper\Translate::class,
+            'languageSelect' => View\Helper\LanguageSelect::class,
         ],
     ],
     // The following section is new and should be added to your file

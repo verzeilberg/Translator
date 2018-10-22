@@ -27,18 +27,17 @@ class Translate extends AbstractHelper {
     }
 
     private function setLanguageFile() {
-        $container = new Container('Language');
-        $name = $container->offsetGet('name');
-        $shortName = $container->offsetGet('shortName');
+        $sessionContainer = new Container('Translator');
+        $language = $sessionContainer->language;
 
-        if (isset($name)) {
-            $language = $shortName;
+        if (!empty($language)) {
+            $shortName = $language->getShortName();
         } else {
-            $language = $this->config['translatorSettings']['defaultLanguage'];
+            $shortName = $this->config['translatorSettings']['defaultLanguage'];
         }
 
-        if (file_exists(__DIR__ . '\..\..\..\locales\/' . $language . '.php')) {
-            $this->translations = include_once (__DIR__ . '\..\..\..\locales\/' . $language . '.php');
+        if (file_exists(__DIR__ . '\..\..\..\locales\/' . $shortName . '.php')) {
+            $this->translations = include_once (__DIR__ . '\..\..\..\locales\/' . $shortName . '.php');
         }
     }
 

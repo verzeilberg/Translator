@@ -3,6 +3,7 @@
 namespace Translator\Service;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Session\Container;
 
 /*
  * Entities
@@ -96,6 +97,20 @@ class translatorService implements translatorServiceInterface {
         }
         $translations = $this->getTranslationsByLanguageId($language->getId());
         $this->generateLanguageFile($translations, $language->getShortName());
+    }
+
+    /**
+     *
+     * Set language in session
+     *
+     * @return      void
+     *
+     */
+    public function setLanguageInSession($language) {
+        $sessionContainer = new Container('Translator');
+        $sessionContainer->language = $language;
+        
+        return true;
     }
 
 }
