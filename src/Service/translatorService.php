@@ -15,15 +15,17 @@ class translatorService implements translatorServiceInterface {
     protected $entityManager;
     protected $languageService;
     protected $translationIndexService;
+    protected $translationService;
     protected $config;
 
     /**
      * Constructor.
      */
-    public function __construct($entityManager, $languageService, $translationIndexService, $config) {
+    public function __construct($entityManager, $languageService, $translationIndexService, $translationService, $config) {
         $this->entityManager = $entityManager;
         $this->languageService = $languageService;
         $this->translationIndexService = $translationIndexService;
+        $this->translationService = $translationService;
         $this->config = $config;
     }
 
@@ -53,7 +55,7 @@ class translatorService implements translatorServiceInterface {
         //Try to save data to file
         try {
             //Set data to file
-            file_put_contents(__DIR__ . '\..\..\locales\/' . strtolower($shortName) . '.php', $fileContent);
+            file_put_contents(__DIR__ . '/../../locales/' . strtolower($shortName) . '.php', $fileContent);
             return true;
         } catch (Exception $e) {
             return false;
@@ -83,19 +85,19 @@ class translatorService implements translatorServiceInterface {
         foreach ($defaultIndexes AS $index) {
             $translationIndex = $this->translationIndexService->newTranslationIndex();
             $translationIndex->setIndex($index);
-            $translationIndex = $this->translationIndexService->saveTranslationIndex($translationIndex, NULL);
+            $this->translationIndexService->saveTranslationIndex($translationIndex, NULL);
         }
 
         $defaultTranslations = $this->config['translatorSettings']['defaultTranslations']['ned'];
         foreach ($defaultTranslations AS $index => $translation) {
             $translationIndex = $this->translationIndexService->getTranslationIndexByIndex($index);
-            $translationObject = $this->newTranslation();
+            $translationObject = $this->translationService->newTranslation();
             $translationObject->setTranslation($translation);
             $translationObject->setTranslationIndex($translationIndex);
             $translationObject->setLanguage($language);
-            $this->saveTranslation($translationObject, NULL);
+            $this->translationService->saveTranslation($translationObject, NULL);
         }
-        $translations = $this->getTranslationsByLanguageId($language->getId());
+        $translations = $this->translationService->getTranslationsByLanguageId($language->getId());
         $this->generateLanguageFile($translations, $language->getShortName());
     }
 

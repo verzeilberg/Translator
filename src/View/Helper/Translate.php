@@ -17,6 +17,7 @@ class Translate extends AbstractHelper {
     }
 
     public function translate($translation) {
+
         if (is_array($this->translations['translations']) && array_key_exists($translation, $this->translations['translations'])) {
             $result = $this->translations['translations'][$translation];
         } else {
@@ -36,8 +37,12 @@ class Translate extends AbstractHelper {
             $shortName = $this->config['translatorSettings']['defaultLanguage'];
         }
 
-        if (file_exists(__DIR__ . '\..\..\..\locales\/' . $shortName . '.php')) {
-            $this->translations = include_once (__DIR__ . '\..\..\..\locales\/' . $shortName . '.php');
+        //Set shortnama to lower string
+        $shortName = strtolower($shortName);
+
+
+        if (file_exists(__DIR__ . '/../../../locales/' . $shortName . '.php')) {
+            $this->translations = include_once (__DIR__ . '/../../../locales/' . $shortName . '.php');
         }
     }
 
