@@ -11,6 +11,7 @@ use UploadImages\Service\cropImageService;
 use UploadImages\Service\imageService;
 use Translator\Service\translatorService;
 use Translator\Service\translationIndexService;
+use Translator\Service\translationService;
 
 /**
  * This is the factory for AuthController. Its purpose is to instantiate the controller
@@ -23,13 +24,14 @@ class LanguageControllerFactory implements FactoryInterface {
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $vhm = $container->get('ViewHelperManager');
         $config = $container->get('config');
-        $ls = new languageService($entityManager);
+        $languageService = new languageService($entityManager);
         $uploadfilesService = new uploadfilesService($config, $entityManager);
         $cropImageService = new cropImageService($entityManager, $config);
         $imageService = new imageService($entityManager, $config);
         $translationIndexService = new translationIndexService($entityManager);
-        $translatorService = new translatorService($entityManager, $ls, $translationIndexService, $config);
-        return new LanguageController($vhm, $entityManager, $ls, $uploadfilesService, $cropImageService, $imageService, $translatorService);
+        $translationService = new translationService($entityManager, $languageService, $translationIndexService);
+        $translatorService = new translatorService($entityManager, $languageService, $translationIndexService, $translationService, $config);
+        return new LanguageController($vhm, $entityManager, $languageService, $uploadfilesService, $cropImageService, $imageService, $translatorService);
     }
 
 }

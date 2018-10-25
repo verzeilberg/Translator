@@ -6,7 +6,7 @@ use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Translator\Controller\TranslatorController;
 use Translator\Service\translatorService;
-use Translator\Service\translationIndexService;
+use Translator\Service\translationIndexService;z
 use Translator\Service\languageService;
 /**
  * This is the factory for AuthController. Its purpose is to instantiate the controller

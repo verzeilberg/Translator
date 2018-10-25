@@ -10,16 +10,16 @@ class LanguageController extends AbstractActionController {
 
     protected $vhm;
     protected $em;
-    protected $ls;
+    protected $languageService;
     protected $ufs;
     protected $cropImageService;
     protected $imageService;
     protected $translatorService;
 
-    public function __construct($vhm, $em, $ls, $ufs, $cropImageService, $imageService, $translatorService) {
+    public function __construct($vhm, $em, $languageService, $ufs, $cropImageService, $imageService, $translatorService) {
         $this->vhm = $vhm;
         $this->em = $em;
-        $this->ls = $ls;
+        $this->languageService = $languageService;
         $this->ufs = $ufs;
         $this->cropImageService = $cropImageService;
         $this->imageService = $imageService;
@@ -28,18 +28,19 @@ class LanguageController extends AbstractActionController {
 
     public function indexAction() {
         $page = $this->params()->fromQuery('page', 1);
-        $query = $this->ls->getLanguages();
-        $languages = $this->ls->getLanguagesForPagination($query, $page, 10);
+        $query = $this->languageService->getLanguages();
+        $languages = $this->languageService->getLanguagesForPagination($query, $page, 10);
+
         if (count($languages) == 0) {
             $this->translatorService->defaultLanguages();
-            $languages = $this->ls->getLanguages();
+            $languages = $this->languageService->getLanguages();
         }
 
         $searchString = '';
         if ($this->getRequest()->isPost()) {
             $searchString = $this->getRequest()->getPost('search');
-            $query = $this->ls->searchLanguages($searchString);
-            $languages = $this->ls->getLanguagesForPagination($query, $page, 10);
+            $query = $this->languageService->searchLanguages($searchString);
+            $languages = $this->languageService->getLanguagesForPagination($query, $page, 10);
         }
 
         return new ViewModel(
@@ -58,8 +59,8 @@ class LanguageController extends AbstractActionController {
         $container->getManager()->getStorage()->clear('cropImages');
 
 
-        $language = $this->ls->newLanguage();
-        $form = $this->ls->createForm($language);
+        $language = $this->languageService->newLanguage();
+        $form = $this->languageService->createForm($language);
 
         //Create new image object and form for image
         $image = $this->imageService->createImage();
@@ -105,7 +106,7 @@ class LanguageController extends AbstractActionController {
                 }
                 //End upload image
                 //Save Language
-                $this->ls->saveLanguage($language, $this->currentUser());
+                $this->languageService->saveLanguage($language, $this->currentUser());
 
                 if ($imageFile['error'] === 0 && is_array($imageFiles)) {
                     return $this->redirect()->toRoute('beheer/images', array('action' => 'crop'));
@@ -136,14 +137,14 @@ class LanguageController extends AbstractActionController {
         if (empty($id)) {
             return $this->redirect()->toRoute('beheer/languages');
         }
-        $language = $this->ls->getLanguage($id);
+        $language = $this->languageService->getLanguage($id);
         if (empty($language)) {
             return $this->redirect()->toRoute('beheer/languages');
         }
 
         $image = $this->imageService->createImage();
         $formImage = $this->imageService->createImageForm($image);
-        $form = $this->ls->createForm($language);
+        $form = $this->languageService->createForm($language);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -184,7 +185,7 @@ class LanguageController extends AbstractActionController {
                 }
                 //End upload image
                 //Save Language
-                $this->ls->updateLanguage($language, $this->currentUser());
+                $this->languageService->updateLanguage($language, $this->currentUser());
 
                 if ($imageFile['error'] === 0 && is_array($imageFiles)) {
                     return $this->redirect()->toRoute('beheer/images', array('action' => 'crop'));
@@ -216,7 +217,7 @@ class LanguageController extends AbstractActionController {
         if (empty($id)) {
             return $this->redirect()->toRoute('beheer/languages');
         }
-        $language = $this->ls->getLanguage($id);
+        $language = $this->languageService->getLanguage($id);
         if (empty($language)) {
             return $this->redirect()->toRoute('beheer/languages');
         }
@@ -227,7 +228,7 @@ class LanguageController extends AbstractActionController {
         }
 
 
-        $this->ls->deleteLanguage($language);
+        $this->languageService->deleteLanguage($language);
         $this->flashMessenger()->addSuccessMessage('Language removed');
         return $this->redirect()->toRoute('beheer/languages');
     }
@@ -242,7 +243,7 @@ class LanguageController extends AbstractActionController {
             if (empty($id)) {
                 return $this->redirect()->toUrl($returnURL);
             }
-            $language = $this->ls->getLanguage($id);
+            $language = $this->languageService->getLanguage($id);
             if (empty($language)) {
                 return $this->redirect()->toUrl($returnURL);
             }
