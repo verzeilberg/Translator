@@ -13,7 +13,7 @@ $form->setAttributes(array(
     'enctype' => 'multipart/form-data'
 ));
 ?>
-<h1>Manage Languages</h1>
+<h1><?php echo $this->translator()->translate('manage.languages'); ?></h1>
 <?php echo $this->form()->openTag($form); ?>
 <?php
 //Language form
@@ -24,8 +24,8 @@ echo $this->partial('translator/language/partials/form.phtml', array('form' => $
 <!-- End image upload -->
 <div class="form-group row">
     <div class="col-sm-12 col-md-12 col-lg-12">
-        <button type="submit" id="submit" class="btn btn-success">Opslaan</button> 
-        <a href="<?php echo $this->url('beheer/languages') ?>" class="btn btn-danger" title="Annuleren">Annuleren</a>
+        <button type="submit" id="submit" class="btn btn-success"><?php echo $this->translator()->translate('save'); ?></button>
+        <a href="<?php echo $this->url('beheer/languages') ?>" class="btn btn-danger" title="<?php echo $this->translator()->translate('cancel'); ?>"><?php echo $this->translator()->translate('cancel'); ?></a>
     </div>  
 </div>
 <?php echo $this->form()->closeTag($form); ?>
