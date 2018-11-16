@@ -6,8 +6,10 @@ use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Translator\Controller\TranslatorController;
 use Translator\Service\translatorService;
-use Translator\Service\translationIndexService;z
+use Translator\Service\translationIndexService;
 use Translator\Service\languageService;
+use Translator\Service\translationService;
+
 /**
  * This is the factory for AuthController. Its purpose is to instantiate the controller
  * and inject dependencies into its constructor.
@@ -22,7 +24,8 @@ class TranslatorControllerFactory implements FactoryInterface {
         $translator = $vhm->get('translator');
         $languageService = new languageService($entityManager);
         $translationIndexService = new translationIndexService($entityManager);
-        $translatorService = new translatorService($entityManager, $languageService, $translationIndexService, $config);
+        $translationService = new translationService($entityManager, $languageService, $translationIndexService);
+        $translatorService = new translatorService($entityManager, $languageService, $translationIndexService, $translationService, $config);
         return new TranslatorController(
                 $vhm, 
                 $translatorService, 

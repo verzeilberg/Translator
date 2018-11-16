@@ -26,7 +26,7 @@ $this->pageBreadcrumbs()->setItems([
         <form class="form-inline" name="searchLanguage" method="post" action="<?php echo $this->url('beheer/translations'); ?>">
             <div class="col text-right" style="padding-right:0;">
                 <input class="form-control" name="search" value="<?php echo $searchString; ?>" type="search" placeholder="<?php echo $this->translator()->translate('search.placeholder'); ?>" aria-label="Search">
-                <button class="btn btn-dark" type="submit"><?php echo $this->translator()->translate('search'); ?></button>
+                <button class="btn btn-dark" type="submit"><?php echo $this->translator()->translate('search.button.text'); ?></button>
             </div>
         </form>
     </div>

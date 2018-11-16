@@ -4,9 +4,9 @@ $this->headTitle('Languages');
 $this->mainMenu()->setActiveItemId('languages');
 
 $this->pageBreadcrumbs()->setItems([
-    'Home' => $this->url('home'),
-    'Manage Languages' => $this->url('beheer/languages'),
-    'Add Language' => $this->url('beheer/languages', ['action' => 'add'])
+    $this->translator()->translate('home.text') => $this->url('home'),
+    $this->translator()->translate('manage.languages') => $this->url('beheer/languages'),
+    $this->translator()->translate('language.add') => $this->url('beheer/languages', ['action' => 'add'])
 ]);
 $form->setAttributes(array(
     'class' => 'form-horizontal',
@@ -25,7 +25,7 @@ echo $this->partial('translator/language/partials/form.phtml', array('form' => $
 <div class="form-group row">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <button type="submit" id="submit" class="btn btn-success">Opslaan</button> 
-        <a href="<?php echo $this->url['beheer\languages']; ?>" class="btn btn-danger" title="Annuleren">Annuleren</a>
+        <a href="<?php echo $this->url('beheer/languages') ?>" class="btn btn-danger" title="Annuleren">Annuleren</a>
     </div>  
 </div>
 <?php echo $this->form()->closeTag($form); ?>

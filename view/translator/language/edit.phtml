@@ -4,9 +4,9 @@ $this->headTitle('Languages');
 $this->mainMenu()->setActiveItemId('languages');
 
 $this->pageBreadcrumbs()->setItems([
-    'Home' => $this->url('home'),
-    'Manage Languages' => $this->url('beheer/languages'),
-    'Edit Language' => $this->url('beheer/languages', ['action' => 'edit'])
+    $this->translator()->translate('home.text') => $this->url('home'),
+    $this->translator()->translate('manage.languages') => $this->url('beheer/languages'),
+    $this->translator()->translate('language.edit') => $this->url('beheer/languages', ['action' => 'edit'])
 ]);
 $form->setAttributes(array(
     'class' => 'form-horizontal',

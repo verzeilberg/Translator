@@ -31,11 +31,6 @@ class LanguageController extends AbstractActionController {
         $query = $this->languageService->getLanguages();
         $languages = $this->languageService->getLanguagesForPagination($query, $page, 10);
 
-        if (count($languages) == 0) {
-            $this->translatorService->defaultLanguages();
-            $languages = $this->languageService->getLanguages();
-        }
-
         $searchString = '';
         if ($this->getRequest()->isPost()) {
             $searchString = $this->getRequest()->getPost('search');

@@ -4,9 +4,9 @@ $this->headTitle('Translators');
 $this->mainMenu()->setActiveItemId('translators');
 
 $this->pageBreadcrumbs()->setItems([
-    'Home' => $this->url('home'),
-    'Manage Languages' => $this->url('beheer/translators'),
-    'Edit Language' => $this->url('beheer/translators', ['action' => 'edit'])
+    $this->translator()->translate('home.text') => $this->url('home'),
+    $this->translator()->translate('manage.languages') => $this->url('beheer/translators'),
+    $this->translator()->translate('translator.edit.index') => $this->url('beheer/translators', ['action' => 'edit'])
 ]);
 $form->setAttributes(array(
     'class' => 'form-horizontal',

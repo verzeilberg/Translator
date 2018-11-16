@@ -4,25 +4,25 @@ $this->headTitle('Languages');
 $this->mainMenu()->setActiveItemId('languages');
 
 $this->pageBreadcrumbs()->setItems([
-    'Home' => $this->url('home'),
-    'Manage Languages' => $this->url('beheer/languages'),
+    $this->translator()->translate('home.text') => $this->url('home'),
+    $this->translator()->translate('manage.languages') => $this->url('beheer/languages'),
 ]);
 ?>
 <div class="row">
-    <h1 class="col">Manage Languages</h1>
+    <h1 class="col"><?php echo $this->translator()->translate('languages.head.title'); ?></h1>
 </div>
 <div class="row">
     <div class="col">
         <a class="btn btn-dark" href="
            <?= $this->url('beheer/languages', ['action' => 'add']); ?>">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Language
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <?php echo $this->translator()->translate('languages.new.title'); ?>
         </a>
     </div>
     <div class="col text-right">
         <form class="form-inline" name="searchLanguage" method="post" action="<?php echo $this->url('beheer/languages'); ?>">
             <div class="col text-right" style="padding-right:0;">
-                <input class="form-control" name="search" value="<?php echo $searchString; ?>" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-dark" type="submit">Search</button>
+                <input class="form-control" name="search" value="<?php echo $searchString; ?>" type="search" placeholder="<?php echo $this->translator()->translate('search.placeholder'); ?>" aria-label="Search">
+                <button class="btn btn-dark" type="submit"><?php echo $this->translator()->translate('search.button.text'); ?></button>
             </div>
         </form>
     </div>
@@ -32,9 +32,9 @@ $this->pageBreadcrumbs()->setItems([
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Shortname</th>
-                    <th>Name</th>
-                    <th>Date Created</th>
+                    <th><?php echo $this->translator()->translate('language.table.shortname.title'); ?></th>
+                    <th><?php echo $this->translator()->translate('language.table.name.title'); ?></th>
+                    <th><?php echo $this->translator()->translate('language.table.date.created.title'); ?></th>
                     <th class="text-center"><i class="far fa-flag"></i></th>
                     <th class="text-center"><i class="fas fa-cogs"></i></th>
                 </tr>
@@ -71,7 +71,7 @@ $this->pageBreadcrumbs()->setItems([
             <?php endforeach; ?> 
             <?php } else { ?>
                 <tr>
-                    <td colspan="5" class="text-center">No languages found!</td>
+                    <td colspan="5" class="text-center"><?php echo $this->translator()->translate('no.languages.found'); ?></td>
                 </tr>
             <?php } ?>
         </table>
