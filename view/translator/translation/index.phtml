@@ -5,7 +5,7 @@ $this->mainMenu()->setActiveItemId('translators');
 
 $this->pageBreadcrumbs()->setItems([
     $this->translator()->translate('home.text') => $this->url('home'),
-    $this->translator()->translate('manage.translations') => $this->url('beheer/translations'),
+    $this->translator()->translate('manage.translations') => $this->url('translations'),
 ]);
 ?>
 <div class="row">
@@ -14,16 +14,16 @@ $this->pageBreadcrumbs()->setItems([
 <div class="row">
     <div class="col">
         <a class="btn btn-dark" href="
-           <?= $this->url('beheer/translations', ['action' => 'add']); ?>">
+           <?= $this->url('translations', ['action' => 'add']); ?>">
             <i class="fas fa-plus"></i> <?php echo $this->translator()->translate('translator.new.index'); ?>
         </a>
         <a class="btn btn-dark" href="
-           <?= $this->url('beheer/translators', ['action' => 'index']); ?>">
+           <?= $this->url('translators', ['action' => 'index']); ?>">
             <i class="fas fa-file-code"></i> <?php echo $this->translator()->translate('translator.generate.languages.files'); ?>
         </a>
     </div>
     <div class="col text-right">
-        <form class="form-inline" name="searchLanguage" method="post" action="<?php echo $this->url('beheer/translations'); ?>">
+        <form class="form-inline" name="searchLanguage" method="post" action="<?php echo $this->url('translations'); ?>">
             <div class="col text-right" style="padding-right:0;">
                 <input class="form-control" name="search" value="<?php echo $searchString; ?>" type="search" placeholder="<?php echo $this->translator()->translate('search.placeholder'); ?>" aria-label="Search">
                 <button class="btn btn-dark" type="submit"><?php echo $this->translator()->translate('search.button.text'); ?></button>
@@ -51,13 +51,13 @@ $this->pageBreadcrumbs()->setItems([
                         <?= (is_object($translationIndex->getDateCreated()) ? $this->escapeHtml($translationIndex->getDateCreated()->format('Y-m-d')) : ''); ?>
                     </td> 
                     <td class="text-center">
-                        <a class="btn btn-sm btn-warning" href="<?= $this->url('beheer/translations', ['action' => 'translation', 'id' => $translationIndex->getId()]); ?>">
+                        <a class="btn btn-sm btn-warning" href="<?= $this->url('translations', ['action' => 'translation', 'id' => $translationIndex->getId()]); ?>">
                             <i class="far fa-calendar-plus"></i>
                         </a>
-                        <a class="btn btn-sm btn-dark" href="<?= $this->url('beheer/translations', ['action' => 'edit', 'id' => $translationIndex->getId()]); ?>">
+                        <a class="btn btn-sm btn-dark" href="<?= $this->url('translations', ['action' => 'edit', 'id' => $translationIndex->getId()]); ?>">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a class="btn btn-sm btn-danger" href="<?= $this->url('beheer/translations', ['action' => 'delete', 'id' => $translationIndex->getId()]); ?>">
+                        <a class="btn btn-sm btn-danger" href="<?= $this->url('translations', ['action' => 'delete', 'id' => $translationIndex->getId()]); ?>">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>    
@@ -74,4 +74,4 @@ $this->pageBreadcrumbs()->setItems([
 <?= $this->paginationControl($translationIndexes,
             'Sliding',
             'translator/partials/paginator', 
-            ['route' => 'beheer/translations']); ?>
+            ['route' => 'translations']); ?>

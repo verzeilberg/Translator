@@ -5,8 +5,8 @@ $this->mainMenu()->setActiveItemId('translators');
 
 $this->pageBreadcrumbs()->setItems([
     $this->translator()->translate('home.text') => $this->url('home'),
-    $this->translator()->translate('manage.languages') => $this->url('beheer/translators'),
-    $this->translator()->translate('translator.generate.languages.files') => $this->url('beheer/translators', ['action' => 'generate-files']),
+    $this->translator()->translate('manage.languages') => $this->url('translators'),
+    $this->translator()->translate('translator.generate.languages.files') => $this->url('translators', ['action' => 'generate-files']),
 ]);
 ?>
 <div class="row">
@@ -39,7 +39,7 @@ $this->pageBreadcrumbs()->setItems([
                             <?php echo (is_object($language->getGeneratedFileDate()) ? $language->getGeneratedFileDate()->format('d-m-Y H:i:s') : ''); ?>
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-sm btn-dark" href="<?= $this->url('beheer/translators', ['action' => 'generate-file', 'id' => $language->getId()]); ?>">
+                            <a class="btn btn-sm btn-dark" href="<?= $this->url('translators', ['action' => 'generate-file', 'id' => $language->getId()]); ?>">
                                 <i class="fas fa-cog"></i> <?php echo $this->translator()->translate('button.generate'); ?>
                             </a>
                         </td>
@@ -53,4 +53,4 @@ $this->pageBreadcrumbs()->setItems([
         </table>
     </div>
 </div>
-<?= $this->paginationControl($languages, 'Sliding', 'translator/partials/paginator', ['route' => 'beheer/translations']); ?>
+<?= $this->paginationControl($languages, 'Sliding', 'translator/partials/paginator', ['route' => 'translations']); ?>

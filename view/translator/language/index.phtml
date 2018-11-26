@@ -5,7 +5,7 @@ $this->mainMenu()->setActiveItemId('languages');
 
 $this->pageBreadcrumbs()->setItems([
     $this->translator()->translate('home.text') => $this->url('home'),
-    $this->translator()->translate('manage.languages') => $this->url('beheer/languages'),
+    $this->translator()->translate('manage.languages') => $this->url('languages'),
 ]);
 ?>
 <div class="row">
@@ -14,12 +14,12 @@ $this->pageBreadcrumbs()->setItems([
 <div class="row">
     <div class="col">
         <a class="btn btn-dark" href="
-           <?= $this->url('beheer/languages', ['action' => 'add']); ?>">
+           <?= $this->url('languages', ['action' => 'add']); ?>">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <?php echo $this->translator()->translate('languages.new.title'); ?>
         </a>
     </div>
     <div class="col text-right">
-        <form class="form-inline" name="searchLanguage" method="post" action="<?php echo $this->url('beheer/languages'); ?>">
+        <form class="form-inline" name="searchLanguage" method="post" action="<?php echo $this->url('languages'); ?>">
             <div class="col text-right" style="padding-right:0;">
                 <input class="form-control" name="search" value="<?php echo $searchString; ?>" type="search" placeholder="<?php echo $this->translator()->translate('search.placeholder'); ?>" aria-label="Search">
                 <button class="btn btn-dark" type="submit"><?php echo $this->translator()->translate('search.button.text'); ?></button>
@@ -60,10 +60,10 @@ $this->pageBreadcrumbs()->setItems([
                         ?>
                     </td>
                     <td class="text-center">
-                        <a class="btn btn-sm btn-dark" href="<?= $this->url('beheer/languages', ['action' => 'edit', 'id' => $language->getId()]); ?>">
+                        <a class="btn btn-sm btn-dark" href="<?= $this->url('languages', ['action' => 'edit', 'id' => $language->getId()]); ?>">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a class="btn btn-sm btn-danger" href="<?= $this->url('beheer/languages', ['action' => 'delete', 'id' => $language->getId()]); ?>">
+                        <a class="btn btn-sm btn-danger" href="<?= $this->url('languages', ['action' => 'delete', 'id' => $language->getId()]); ?>">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>    
@@ -80,4 +80,4 @@ $this->pageBreadcrumbs()->setItems([
 <?= $this->paginationControl($languages,
             'Sliding',
             'translator/partials/paginator', 
-            ['route' => 'beheer/translations']); ?>
+            ['route' => 'translations']); ?>

@@ -41,10 +41,10 @@ return [
     // The following section is new and should be added to your file
     'router' => [
         'routes' => [
-            'translator' => [
+            'translators' => [
                 'type' => 'segment',
                 'options' => [
-                    'route' => '/translator[/:action][/:id]',
+                    'route' => '/translators[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
@@ -55,10 +55,10 @@ return [
                     ],
                 ],
             ],
-            'translation' => [
+            'translations' => [
                 'type' => 'segment',
                 'options' => [
-                    'route' => '/translation[/:action][/:id]',
+                    'route' => '/translations[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
@@ -69,10 +69,10 @@ return [
                     ],
                 ],
             ],
-            'language' => [
+            'languages' => [
                 'type' => 'segment',
                 'options' => [
-                    'route' => '/language[/:action][/:id]',
+                    'route' => '/languages[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',

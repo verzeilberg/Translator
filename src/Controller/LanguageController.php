@@ -84,7 +84,7 @@ class LanguageController extends AbstractActionController {
                         $image = $imageFiles['image'];
                         $cropImages = $imageFiles['cropImages'];
                         //Create return URL
-                        $returnURL = $this->cropImageService->createReturnURL('beheer/languages', 'index');
+                        $returnURL = $this->cropImageService->createReturnURL('languages', 'index');
 
                         //Create session container for crop
                         $this->cropImageService->createContainerImages($cropImages, $returnURL);
@@ -104,9 +104,9 @@ class LanguageController extends AbstractActionController {
                 $this->languageService->saveLanguage($language, $this->currentUser());
 
                 if ($imageFile['error'] === 0 && is_array($imageFiles)) {
-                    return $this->redirect()->toRoute('beheer/images', array('action' => 'crop'));
+                    return $this->redirect()->toRoute('images', array('action' => 'crop'));
                 } else {
-                    return $this->redirect()->toRoute('beheer/languages');
+                    return $this->redirect()->toRoute('languages');
                 }
             }
         }
@@ -130,11 +130,11 @@ class LanguageController extends AbstractActionController {
 
         $id = (int) $this->params()->fromRoute('id', 0);
         if (empty($id)) {
-            return $this->redirect()->toRoute('beheer/languages');
+            return $this->redirect()->toRoute('languages');
         }
         $language = $this->languageService->getLanguage($id);
         if (empty($language)) {
-            return $this->redirect()->toRoute('beheer/languages');
+            return $this->redirect()->toRoute('languages');
         }
 
         $image = $this->imageService->createImage();
@@ -163,7 +163,7 @@ class LanguageController extends AbstractActionController {
                         $image = $imageFiles['image'];
                         $cropImages = $imageFiles['cropImages'];
                         //Create return URL
-                        $returnURL = $this->cropImageService->createReturnURL('beheer/languages', 'index');
+                        $returnURL = $this->cropImageService->createReturnURL('languages', 'index');
 
                         //Create session container for crop
                         $this->cropImageService->createContainerImages($cropImages, $returnURL);
@@ -183,14 +183,14 @@ class LanguageController extends AbstractActionController {
                 $this->languageService->updateLanguage($language, $this->currentUser());
 
                 if ($imageFile['error'] === 0 && is_array($imageFiles)) {
-                    return $this->redirect()->toRoute('beheer/images', array('action' => 'crop'));
+                    return $this->redirect()->toRoute('images', array('action' => 'crop'));
                 } else {
-                    return $this->redirect()->toRoute('beheer/languages');
+                    return $this->redirect()->toRoute('languages');
                 }
             }
         }
 
-        $returnURL = $this->cropImageService->createReturnURL('beheer/languages', 'edit', $id);
+        $returnURL = $this->cropImageService->createReturnURL('languages', 'edit', $id);
 
         return new ViewModel(
                 array(
@@ -210,11 +210,11 @@ class LanguageController extends AbstractActionController {
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (empty($id)) {
-            return $this->redirect()->toRoute('beheer/languages');
+            return $this->redirect()->toRoute('languages');
         }
         $language = $this->languageService->getLanguage($id);
         if (empty($language)) {
-            return $this->redirect()->toRoute('beheer/languages');
+            return $this->redirect()->toRoute('languages');
         }
         //Delete linked images
         $image = $language->getLanguageImage();
@@ -225,7 +225,7 @@ class LanguageController extends AbstractActionController {
 
         $this->languageService->deleteLanguage($language);
         $this->flashMessenger()->addSuccessMessage('Language removed');
-        return $this->redirect()->toRoute('beheer/languages');
+        return $this->redirect()->toRoute('languages');
     }
 
     public function languageSelectAction() {

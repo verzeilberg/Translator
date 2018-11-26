@@ -50,7 +50,7 @@ class TranslationController extends AbstractActionController {
                 //Save Customer
                 $this->translationIndexService->saveTranslationIndex($translationIndex, $this->currentUser());
                 $this->flashMessenger()->addSuccessMessage($this->translator->translate('translation.index.added'));
-                return $this->redirect()->toRoute('beheer/translations');
+                return $this->redirect()->toRoute('translations');
             }
         }
 
@@ -65,12 +65,12 @@ class TranslationController extends AbstractActionController {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (empty($id)) {
             $this->flashMessenger()->addErrorMessage($this->translator->translate('id.not.found'));
-            return $this->redirect()->toRoute('beheer/translations');
+            return $this->redirect()->toRoute('translations');
         }
         $translationIndex = $this->translationIndexService->getTranslationIndex($id);
         if (empty($translationIndex)) {
             $this->flashMessenger()->addErrorMessage($this->translator->translate('translation.index.not.found'));
-            return $this->redirect()->toRoute('beheer/translations');
+            return $this->redirect()->toRoute('translations');
         }
         $form = $this->translationIndexService->createForm($translationIndex);
 
@@ -80,7 +80,7 @@ class TranslationController extends AbstractActionController {
                 //Save Customer
                 $this->translationIndexService->updateTranslationIndex($translationIndex, $this->currentUser());
                 $this->flashMessenger()->addSuccessMessage($this->translator->translate('translation.index.changed'));
-                return $this->redirect()->toRoute('beheer/translations');
+                return $this->redirect()->toRoute('translations');
             }
         }
 
@@ -95,28 +95,28 @@ class TranslationController extends AbstractActionController {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (empty($id)) {
             $this->flashMessenger()->addErrorMessage($this->translator->translate('id.not.found'));
-            return $this->redirect()->toRoute('beheer/translations');
+            return $this->redirect()->toRoute('translations');
         }
         $translationIndex = $this->translationIndexService->getTranslationIndex($id);
         if (empty($translationIndex)) {
             $this->flashMessenger()->addErrorMessage($this->translator->translate('translation.index.not.found'));
-            return $this->redirect()->toRoute('beheer/translations');
+            return $this->redirect()->toRoute('translations');
         }
         $this->translationIndexService->deleteTranslationIndex($translationIndex);
         $this->flashMessenger()->addSuccessMessage($this->translator->translate('translation.index.removed'));
-        return $this->redirect()->toRoute('beheer/translations');
+        return $this->redirect()->toRoute('translations');
     }
 
     public function translationAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (empty($id)) {
             $this->flashMessenger()->addErrorMessage($this->translator->translate('id.not.found'));
-            return $this->redirect()->toRoute('beheer/translations');
+            return $this->redirect()->toRoute('translations');
         }
         $translationIndex = $this->translationIndexService->getTranslationIndex($id);
         if (empty($translationIndex)) {
             $this->flashMessenger()->addErrorMessage($this->translator->translate('translation.index.not.found'));
-            return $this->redirect()->toRoute('beheer/translations');
+            return $this->redirect()->toRoute('translations');
         }
         //Check if post
         if ($this->getRequest()->isPost()) {
@@ -126,7 +126,7 @@ class TranslationController extends AbstractActionController {
             } else {
                 $this->flashMessenger()->addErrorMessage($this->translator->translate('translations.added.error'));
             }
-            return $this->redirect()->toRoute('beheer/translations');
+            return $this->redirect()->toRoute('translations');
         }
         //Get translations for translationIndex
         $translations = $this->translationService->getTranslationsByIndexId($translationIndex->getId());

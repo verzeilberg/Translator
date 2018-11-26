@@ -36,12 +36,12 @@ class TranslatorController extends AbstractActionController {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (empty($id)) {
             $this->flashMessenger()->addErrorMessage($this->translator->translate('id.not.found'));
-            return $this->redirect()->toRoute('beheer/translators');
+            return $this->redirect()->toRoute('translators');
         }
         $language = $this->languageService->getLanguage($id);
         if (empty($language)) {
             $this->flashMessenger()->addErrorMessage($this->translator->translate('language.not.found'));
-            return $this->redirect()->toRoute('beheer/translators');
+            return $this->redirect()->toRoute('translators');
         }
         $result = $this->translatorService->generateLanguageFile($language->getTranslations(), $language->getShortName());
         if($result){
@@ -51,7 +51,7 @@ class TranslatorController extends AbstractActionController {
         } else {
             $this->flashMessenger()->addErrorMessage($language->getName() . ' ' . $this->translator->translate('language.file.not.generated'));
         }
-        return $this->redirect()->toRoute('beheer/translators', array('action' => 'index'));
+        return $this->redirect()->toRoute('translators', array('action' => 'index'));
     }
 
 }
